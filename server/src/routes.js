@@ -2,13 +2,20 @@ const express = require('express');
 const routes = express.Router();
 const Revenue = require('./controllers/revenueController');
 const Expense = require('./controllers/expenseController');
-const Launch =  require('./controllers/launchController');
+const Launch = require('./controllers/launchController');
 const Grafics = require('./controllers/graficsController');
+const Arquivo = require('./controllers/uploadController');
 
 const revenue = new Revenue();
 const expense = new Expense();
 const launch = new Launch();
 const grafics = new Grafics();
+const arquivo = new Arquivo();
+
+
+const multer = require('multer');
+const multerConfig = require('./middleware/upload');
+
 
 routes.post('/revenue', revenue.create);
 routes.get('/revenue', revenue.All);
@@ -47,5 +54,8 @@ routes.get('/grafics/launchExpenseAnoMes/:mes/:ano/:usuario', grafics.launchExpe
 routes.get('/grafics/launchRevenueAnoMes/:mes/:ano/:usuario', grafics.launchRevenueAnoMes);
 routes.get('/grafics/launchRevenueLaunchExpenseAnoMes/:mes/:ano/:usuario', grafics.launchRevenueLaunchExpenseAnoMes);
 routes.get('/grafics/launchTotalAnoMes/:mes/:ano', grafics.launchTotalAnoMes);
+
+routes.post('/upload/image', multer(multerConfig).single('file'), arquivo.uploadImage);
+
 
 module.exports = routes;

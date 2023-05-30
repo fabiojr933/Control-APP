@@ -16,6 +16,7 @@ import Flavia from './src/pages/user/flavia';
 import RelatorioFabio from './src/pages/user/relatorioFabio';
 import RelatorioFlavia from './src/pages/user/relatorioFlavia';
 import Momento from './src/pages/moments';
+import MomentNew from './src/pages/moments/new';
 
 LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
 LogBox.ignoreAllLogs();//Ignore all log notifications
@@ -108,12 +109,14 @@ function App() {
             }}
             name="Momento" component={Momento} />
 
+          <Stack.Screen
+            options={{
+              title: 'Voltar'
+            }}
+            name="MomentNew" component={MomentNew} />
+
+
         </Stack.Navigator>
-
-
-
-
-
 
       </PaperProvider>
     </NavigationContainer>

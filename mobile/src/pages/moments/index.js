@@ -2,7 +2,7 @@
 import * as React from 'react';
 import { Alert, ScrollView } from 'react-native';
 import { View, StyleSheet } from 'react-native';
-import { Text, Avatar, Provider, Card, List, Button, ActivityIndicator, MD2Colors, DataTable } from 'react-native-paper'; import { SafeAreaView } from 'react-native-safe-area-context';
+import { Text, Avatar, Provider, Card, Portal, FAB, ActivityIndicator, MD2Colors, DataTable } from 'react-native-paper'; import { SafeAreaView } from 'react-native-safe-area-context';
 import { NavigationContext } from '@react-navigation/native';
 
 
@@ -12,6 +12,9 @@ function Momentos() {
     const [load, setLoad] = React.useState(null);
     const navigation = React.useContext(NavigationContext);
     const LeftContent = props => <Avatar.Icon {...props} icon="folder" />
+    const [state, setState] = React.useState({ open: false });
+    const onStateChange = ({ open }) => setState({ open });
+    const { open } = state;
 
     async function ContagemTempo() {
         setTimeout(() => {
@@ -83,6 +86,27 @@ function Momentos() {
                         </View>
                     </ScrollView>
                 </SafeAreaView>
+
+                <Portal>
+                    <FAB.Group
+                        open={open}
+                        visible
+                        icon={open ? 'calendar-today' : 'plus'}
+                        actions={[
+                            {
+                                icon: 'plus',
+                                label: 'Novo momento',
+                                onPress: () => { navigation.navigate('MomentNew') },
+                            },
+                        ]}
+                        onStateChange={onStateChange}
+                        onPress={() => {
+                            if (open) {
+                                // do something if the speed dial is open
+                            }
+                        }}
+                    />
+                </Portal>
 
             </Provider >
         );
