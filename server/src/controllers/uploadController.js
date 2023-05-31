@@ -3,24 +3,30 @@ const knex = require('../config/connection');
 
 class UploadController {
     async uploadImage(req, res) {
-       
-        console.log(req.body)
-        console.log(req.file)
-        console.log(req.data)
-        return;
+
         var data = {
             'originalname': req.file.originalname,
             'mimetype': req.file.mimetype,
             'destination': req.file.destination,
             'filename': req.file.filename,
             'path': req.file.path,
-            'day': Number(req.body.day),
-            'month': Number(req.body.month),
-            'year': Number(req.body.year),
+            'day': (req.body.day),
+            'month': (req.body.month),
+            'year': (req.body.year),
+            'description': req.body.description
         }
         console.log(data)
         try {
             await knex('moments').insert(data);
+            res.status(200).json(data);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    async ImageIndex(req, res) {
+        try {
+            const data = await knex('moments').select('*');
             res.status(200).json(data);
         } catch (error) {
             console.log(error);

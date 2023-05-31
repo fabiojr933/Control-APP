@@ -56,6 +56,6 @@ routes.get('/grafics/launchRevenueLaunchExpenseAnoMes/:mes/:ano/:usuario', grafi
 routes.get('/grafics/launchTotalAnoMes/:mes/:ano', grafics.launchTotalAnoMes);
 
 routes.post('/upload/image', multer(multerConfig).single('file'), arquivo.uploadImage);
-
+routes.get('/ListaImage', arquivo.ImageIndex);
 
 module.exports = routes;

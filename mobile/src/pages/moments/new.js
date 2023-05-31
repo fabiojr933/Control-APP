@@ -1,14 +1,14 @@
 
 import * as React from 'react';
 import { Image, ScrollView } from 'react-native';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Text, Avatar, Provider, Card, TextInput, ActivityIndicator, MD2Colors, Button } from 'react-native-paper'; import { SafeAreaView } from 'react-native-safe-area-context';
 import { NavigationContext } from '@react-navigation/native';
 import { DatePickerInput, registerTranslation } from 'react-native-paper-dates';
 import moment from 'moment';
 import api from '../../service/api';
 import axios from 'axios';
-const FormData = require('form-data');
+import * as DocumentPicker from 'expo-document-picker';
 
 registerTranslation('pt-br', {
     save: 'Salvar',
@@ -32,22 +32,9 @@ import * as ImagePicker from 'expo-image-picker';
 
 function NewMoment() {
 
-    const pickImage = async () => {
-        // No permissions request is necessary for launching the image library
-        let result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.All,
-            allowsEditing: true,
-            // aspect: [4, 3],
-            quality: 1,
-        });
-        console.log(result);
-
-        if (!result.canceled) {
-            setImage(result.assets[0].uri)
-        }
-    };
-
     const [image, setImage] = React.useState(null);
+    const [mimeType, setMimeType] = React.useState(null);
+    const [name, setName] = React.useState(null);
 
     const [tempo, setTempo] = React.useState(true);
     const [load, setLoad] = React.useState(null);
@@ -58,7 +45,7 @@ function NewMoment() {
     const [descricao, setDescricao] = React.useState("");
     const [date, setDate] = React.useState(undefined);
     const [open, setOpen] = React.useState(false);
-
+    const [inputDate, setInputDate] = React.useState(undefined)
     const onDismissSingle = React.useCallback(() => {
         setOpen(false);
     }, [setOpen]);
@@ -70,7 +57,8 @@ function NewMoment() {
         },
         [setOpen, setDate]
     );
-    const [inputDate, setInputDate] = React.useState(undefined)
+
+
 
     async function ContagemTempo() {
         setTimeout(() => {
@@ -85,6 +73,16 @@ function NewMoment() {
     }, [load, navigation]);
 
 
+   
+
+    const pickDocument = async () => {
+        let result = await DocumentPicker.getDocumentAsync({});
+        console.log(result.uri);
+        console.log(result);
+        setImage(result.uri)
+        setMimeType(result.mimeType)
+        setName(result.name)
+    };
 
     async function AddMomento() {
         if (!descricao || !inputDate || !image) {
@@ -96,30 +94,30 @@ function NewMoment() {
         var year = (moment(inputDate).format('YYYY'));
         var file = (image)
 
-        const form = new FormData();
-        form.append('file', 'file');
-        form.append('file', new Blob(file));
-
-        var dados = {
-            'file': file,
-            'day': day,
-            'month': month,
-            'year': year
-        }
-
+        var formData = new FormData();
+        formData.append("file", {
+            uri: image,
+            type: mimeType,
+            name: name,
+        });
+        formData.append('day', day);
+        formData.append('month', month);
+        formData.append('year', year);
+        formData.append('description', descricao);
 
         var config = {
             method: 'POST',
             url: api.url_base_api + '/upload/image',
-            data: form,
+            data: formData,
             headers: {
-                'Content-Type': 'multipart/form-data; ',
+                "Content-Type": "multipart/form-data",
             },
         };
+
         try {
             const response = await axios(config);
-            if (response.status == 201) {
-                navigation.navigate('Home');
+            if (response.status == 200) {
+                navigation.navigate('Momento');
             }
 
         } catch (error) {
@@ -127,6 +125,7 @@ function NewMoment() {
             alert('Ops! ocorreu algum erro');
         }
     }
+
 
 
     if (tempo == true) {
@@ -163,11 +162,13 @@ function NewMoment() {
                                     <Text>  </Text>
 
                                     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                                        <Button title="Pick an image from camera roll" onPress={pickImage} > Selecione a foto</Button>
+                                        <Button title="Pick an image from camera roll" onPress={pickDocument} > Selecione a foto</Button>
                                         {image && <Image source={{ uri: image }} style={{ width: 300, height: 480 }} />}
                                     </View>
                                     <Text>  </Text>
                                     <Text>  </Text>
+
+
                                     <Text>  </Text>
                                     <Button icon="plus" mode="contained" onPress={() => AddMomento()}>
                                         Salvar
