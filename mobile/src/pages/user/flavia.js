@@ -28,6 +28,7 @@ function Flavia() {
     const [load, setLoad] = React.useState(null);
     const [sumLaunchExpense, setSumLaunchExpense] = React.useState(0.00);
     const [sumLaunchRevenue, setSumLaunchRevenue] = React.useState(0.00);
+    const [online, setOnline] = React.useState(false);
 
     const [mesOpen, mesSetOpen] = React.useState(false);
     const [mesValue, mesSetValue] = React.useState(null);
@@ -74,7 +75,31 @@ function Flavia() {
         }, 2000);
     }
 
+    async function Carregar() {
+        if (online === false) {
+            var config = {
+                method: 'GET',
+                url: api.url_base_api + '/'
+            };
+            try {
+                const response = await axios(config);
+                if (response.status == 200) {
+                    setOnline(true);
+                } else {
+                    navigation.navigate('SysOnline')
+                }
+            } catch (error) {
+                navigation.navigate('SysOnline')
+            }
+        } else {
+
+        }
+    }
+
     React.useEffect(() => {
+        if (online == false) {
+            Carregar();
+        } 
         setTempo(true);
         setLoad(true);
         mesSetValue(moment().format('MM'));
@@ -100,7 +125,7 @@ function Flavia() {
                 setSumLaunchExpense(response.data[0].value.toFixed(2));
             }
         } catch (error) {
-            alert('Ops! ocorreu algum erro');
+          //  alert('Ops! ocorreu algum erro');
         }
     }
 
@@ -116,7 +141,7 @@ function Flavia() {
                 setSumLaunchRevenue(response.data[0].value.toFixed(2));
             }
         } catch (error) {
-            alert('Ops! ocorreu algum erro');
+         //   alert('Ops! ocorreu algum erro');
         }
     }
 
@@ -135,7 +160,7 @@ function Flavia() {
             }
         } catch (error) {
             console.log(error)
-            alert('Ops! ocorreu algum erro');
+         //   alert('Ops! ocorreu algum erro');
         }
     }
 
@@ -151,7 +176,7 @@ function Flavia() {
                 setRevenueAll(response.data);
             }
         } catch (error) {
-            alert('Ops! ocorreu algum erro');
+          //  alert('Ops! ocorreu algum erro');
         }
     }
 
@@ -186,7 +211,7 @@ function Flavia() {
                 navigation.navigate('Home');
             }
         } catch (error) {
-            alert('Ops! ocorreu algum erro');
+          //  alert('Ops! ocorreu algum erro');
         }
     }
 
@@ -204,7 +229,7 @@ function Flavia() {
             }
         } catch (error) {
             console.log(error)
-            alert('Ops! ocorreu algum erro');
+          //  alert('Ops! ocorreu algum erro');
         }
     }
 
@@ -222,7 +247,7 @@ function Flavia() {
             }
         } catch (error) {
             console.log(error)
-            alert('Ops! ocorreu algum erro');
+         //   alert('Ops! ocorreu algum erro');
         }
     }
 
@@ -240,7 +265,7 @@ function Flavia() {
             }
         } catch (error) {
             console.log(error)
-            alert('Ops! ocorreu algum erro');
+          //  alert('Ops! ocorreu algum erro');
         }
     }
 
@@ -274,7 +299,7 @@ function Flavia() {
                 navigation.navigate('Home');
             }
         } catch (error) {
-            alert('Ops! ocorreu algum erro');
+          //  alert('Ops! ocorreu algum erro');
         }
     }
 
@@ -321,7 +346,7 @@ function Flavia() {
                     navigation.navigate('Flavia');
                 }
             } catch (error) {
-                alert('Ops! ocorreu algum erro');
+             //   alert('Ops! ocorreu algum erro');
             }
         }
 
@@ -372,7 +397,7 @@ function Flavia() {
                     navigation.navigate('Flavia');
                 }
             } catch (error) {
-                alert('Ops! ocorreu algum erro');
+              //  alert('Ops! ocorreu algum erro');
             }
         }
 

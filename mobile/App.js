@@ -17,6 +17,7 @@ import RelatorioFabio from './src/pages/user/relatorioFabio';
 import RelatorioFlavia from './src/pages/user/relatorioFlavia';
 import Momento from './src/pages/moments';
 import MomentNew from './src/pages/moments/new';
+import SysOnline from './src/pages/Home/online';
 
 LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
 LogBox.ignoreAllLogs();//Ignore all log notifications
@@ -114,6 +115,13 @@ function App() {
               title: 'Voltar'
             }}
             name="MomentNew" component={MomentNew} />
+
+          <Stack.Screen
+            options={{
+              headerShown: false
+            }}
+            name="SysOnline" component={SysOnline} />
+
 
 
         </Stack.Navigator>

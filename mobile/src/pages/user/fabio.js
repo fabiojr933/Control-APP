@@ -28,6 +28,7 @@ function Fabio() {
     const [load, setLoad] = React.useState(null);
     const [sumLaunchExpense, setSumLaunchExpense] = React.useState(0.00);
     const [sumLaunchRevenue, setSumLaunchRevenue] = React.useState(0.00);
+    const [online, setOnline] = React.useState(false);
 
     const [mesOpen, mesSetOpen] = React.useState(false);
     const [mesValue, mesSetValue] = React.useState(null);
@@ -63,7 +64,31 @@ function Fabio() {
         }, 2000);
     }
 
+    async function Carregar() {
+        if (online === false) {
+            var config = {
+                method: 'GET',
+                url: api.url_base_api + '/'
+            };
+            try {
+                const response = await axios(config);
+                if (response.status == 200) {
+                    setOnline(true);
+                } else {
+                    navigation.navigate('SysOnline')
+                }
+            } catch (error) {
+                navigation.navigate('SysOnline')
+            }
+        } else {
+
+        }
+    }
+
     React.useEffect(() => {
+        if (online == false) {
+            Carregar();
+        } 
         setTempo(true);
         setLoad(true);
         mesSetValue(moment().format('MM'));
@@ -89,7 +114,7 @@ function Fabio() {
                 setSumLaunchExpense(response.data[0].value.toFixed(2));
             }
         } catch (error) {
-            alert('Ops! ocorreu algum erro');
+         //   alert('Ops! ocorreu algum erro');
         }
     }
 
@@ -105,7 +130,7 @@ function Fabio() {
                 setSumLaunchRevenue(response.data[0].value.toFixed(2));
             }
         } catch (error) {
-            alert('Ops! ocorreu algum erro');
+          //  alert('Ops! ocorreu algum erro');
         }
     }
 
@@ -124,7 +149,7 @@ function Fabio() {
             }
         } catch (error) {
             console.log(error)
-            alert('Ops! ocorreu algum erro');
+           // alert('Ops! ocorreu algum erro');
         }
     }
 
@@ -140,7 +165,7 @@ function Fabio() {
                 setRevenueAll(response.data);
             }
         } catch (error) {
-            alert('Ops! ocorreu algum erro');
+         //   alert('Ops! ocorreu algum erro');
         }
     }
 
@@ -201,7 +226,7 @@ function Fabio() {
             }
         } catch (error) {
             console.log(error)
-            alert('Ops! ocorreu algum erro');
+          //  alert('Ops! ocorreu algum erro');
         }
     }
 
@@ -223,7 +248,7 @@ function Fabio() {
             }
         } catch (error) {
             console.log(error)
-            alert('Ops! ocorreu algum erro');
+           // alert('Ops! ocorreu algum erro');
         }
     }
 
@@ -245,7 +270,7 @@ function Fabio() {
             }
         } catch (error) {
             console.log(error)
-            alert('Ops! ocorreu algum erro');
+          //  alert('Ops! ocorreu algum erro');
         }
     }
 
@@ -267,7 +292,7 @@ function Fabio() {
             }
         } catch (error) {
             console.log(error)
-            alert('Ops! ocorreu algum erro');
+           // alert('Ops! ocorreu algum erro');
         }
     }
 
@@ -287,7 +312,7 @@ function Fabio() {
                 navigation.navigate('Fabio');
             }
         } catch (error) {
-            alert('Ops! ocorreu algum erro');
+          //  alert('Ops! ocorreu algum erro');
         }
     }
 
@@ -336,7 +361,7 @@ function Fabio() {
                     navigation.navigate('Fabio');
                 }
             } catch (error) {
-                alert('Ops! ocorreu algum erro');
+              //  alert('Ops! ocorreu algum erro');
             }
         }
 
@@ -387,7 +412,7 @@ function Fabio() {
                     navigation.navigate('Fabio');
                 }
             } catch (error) {
-                alert('Ops! ocorreu algum erro');
+              //  alert('Ops! ocorreu algum erro');
             }
         }
 

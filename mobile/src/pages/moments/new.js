@@ -35,6 +35,7 @@ function NewMoment() {
     const [image, setImage] = React.useState(null);
     const [mimeType, setMimeType] = React.useState(null);
     const [name, setName] = React.useState(null);
+    const [online, setOnline] = React.useState(false);
 
     const [tempo, setTempo] = React.useState(true);
     const [load, setLoad] = React.useState(null);
@@ -66,14 +67,38 @@ function NewMoment() {
         }, 2000);
     }
 
+    async function Carregar() {
+        if (online === false) {
+            var config = {
+                method: 'GET',
+                url: api.url_base_api + '/'
+            };
+            try {
+                const response = await axios(config);
+                if (response.status == 200) {
+                    setOnline(true);
+                } else {
+                    navigation.navigate('SysOnline')
+                }
+            } catch (error) {
+                navigation.navigate('SysOnline')
+            }
+        } else {
+
+        }
+    }
+
     React.useEffect(() => {
+        if (online == false) {
+            Carregar();
+        }
         setTempo(true);
         setLoad(false);
         ContagemTempo();
     }, [load, navigation]);
 
 
-   
+
 
     const pickDocument = async () => {
         let result = await DocumentPicker.getDocumentAsync({});
@@ -84,7 +109,7 @@ function NewMoment() {
         setName(result.name)
     };
 
-    async function AddMomento() {
+    async function AddMomento() {      
         if (!descricao || !inputDate || !image) {
             return alert('Todos os campos são obrigatorios');
         }
@@ -121,8 +146,7 @@ function NewMoment() {
             }
 
         } catch (error) {
-            console.log(error);
-            alert('Ops! ocorreu algum erro');
+               alert('Ops! ocorreu algum erro');
         }
     }
 
@@ -170,7 +194,7 @@ function NewMoment() {
 
 
                                     <Text>  </Text>
-                                    <Button icon="plus" mode="contained" onPress={() => AddMomento()}>
+                                    <Button icon="plus-box" mode="contained" onPress={() => AddMomento()}>
                                         Salvar
                                     </Button>
                                     <Text>  </Text>

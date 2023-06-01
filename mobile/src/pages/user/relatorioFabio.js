@@ -28,6 +28,7 @@ function Fabio() {
     const [load, setLoad] = React.useState(null);
     const [sumLaunchExpense, setSumLaunchExpense] = React.useState(0.00);
     const [sumLaunchRevenue, setSumLaunchRevenue] = React.useState(0.00);
+    const [online, setOnline] = React.useState(false);
 
     const [mesOpen, mesSetOpen] = React.useState(false);
     const [mesValue, mesSetValue] = React.useState(null);
@@ -93,11 +94,13 @@ function Fabio() {
             setGraficDadosRevenueExpense(dados);
             setCoresRevenueExpense(cores)
         } catch (error) {
-            alert(error);
+            dados.push({ 'descricao': 'Sem dados', y: 0.00, 'cor': 'red' });   
+            setGraficDadosRevenueExpense(dados);
+          //  alert(error);
         }
 
     }
-    console.log(expenseAll)
+
 
     async function graficRevenue() {
         var dados = [];
@@ -123,7 +126,9 @@ function Fabio() {
             setGraficDadosRevenue(dados);
             setCoresRevenue(cores)
         } catch (error) {
-            alert(error);
+            dados.push({ 'receita': 'Sem dados', y: 0.00, 'cor': 'red' });   
+            setGraficDadosRevenue(dados);
+          //  alert(error);
         }
 
     }
@@ -154,7 +159,9 @@ function Fabio() {
             setGraficDadosExpense(dados);
             setCoresExpense(cores)
         } catch (error) {
-            alert(error);
+            dados.push({ 'descricao': 'Sem dados', y: 0.00, 'cor': 'red' });   
+            setGraficDadosExpense(dados);
+         //   alert(error);
         }
 
     }
@@ -165,7 +172,31 @@ function Fabio() {
         }, 2000);
     }
 
+    async function Carregar() {
+        if (online === false) {
+            var config = {
+                method: 'GET',
+                url: api.url_base_api + '/'
+            };
+            try {
+                const response = await axios(config);
+                if (response.status == 200) {
+                    setOnline(true);
+                } else {
+                    navigation.navigate('SysOnline')
+                }
+            } catch (error) {
+                navigation.navigate('SysOnline')
+            }
+        } else {
+
+        }
+    }
+
     React.useEffect(() => {
+        if (online == false) {
+            Carregar();
+        } 
         setTempo(true);
         setLoad(true);
         mesSetValue(moment().format('MM'));
@@ -194,7 +225,7 @@ console.log(sumLaunchExpense)
                 setSumLaunchExpense(response.data[0].value.toFixed(2));
             }
         } catch (error) {
-            alert('Ops! ocorreu algum erro');
+          //  alert('Ops! ocorreu algum erro');
         }
     }
 
@@ -210,7 +241,7 @@ console.log(sumLaunchExpense)
                 setSumLaunchRevenue(response.data[0].value.toFixed(2));
             }
         } catch (error) {
-            alert('Ops! ocorreu algum erro');
+          //  alert('Ops! ocorreu algum erro');
         }
     }
 
@@ -229,7 +260,7 @@ console.log(sumLaunchExpense)
             }
         } catch (error) {
             console.log(error)
-            alert('Ops! ocorreu algum erro');
+          //  alert('Ops! ocorreu algum erro');
         }
     }
 
@@ -245,7 +276,7 @@ console.log(sumLaunchExpense)
                 setRevenueAll(response.data);
             }
         } catch (error) {
-            alert('Ops! ocorreu algum erro');
+           // alert('Ops! ocorreu algum erro');
         }
     }
 

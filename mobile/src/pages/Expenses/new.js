@@ -13,7 +13,8 @@ function ExpensesNew() {
     const navigation = React.useContext(NavigationContext);
     const [expense, setExpense] = React.useState('');
     const onChangeText = expense => setExpense(expense);
-
+    const [online, setOnline] = React.useState(false);
+    
     async function AddDespesa() {
         if (!expense) {
             return alert('Despesa é obigatorio');
@@ -33,6 +34,33 @@ function ExpensesNew() {
             alert('Ops! ocorreu algum erro');
         }
     }
+
+    async function Carregar() {
+        if (online === false) {
+            var config = {
+                method: 'GET',
+                url: api.url_base_api + '/'
+            };
+            try {
+                const response = await axios(config);
+                if (response.status == 200) {
+                    setOnline(true);
+                } else {
+                    navigation.navigate('SysOnline')
+                }
+            } catch (error) {
+                navigation.navigate('SysOnline')
+            }
+        } else {
+
+        }
+    }
+    useEffect(() => {
+        if (online == false) {
+            Carregar();
+        }
+    }, [load, navigation]);
+
 
     return (
         <SafeAreaView>

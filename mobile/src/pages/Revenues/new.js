@@ -14,9 +14,10 @@ function RevenuesNew() {
     const navigation = React.useContext(NavigationContext);
     const [revenue, setRevenue] = React.useState('');
     const onChangeText = revenue => setRevenue(revenue);
+    const [online, setOnline] = React.useState(false);
+    const [load, setLoad] = useState(true);
 
-  
-    async function AddRevenue() {
+    async function AddRevenue() {      
         if (!revenue) {
             return alert('Nome da Receita é obigatorio');
         }
@@ -36,6 +37,34 @@ function RevenuesNew() {
         }
     }
 
+    async function Carregar() {
+        if (online === false) {
+            var config = {
+                method: 'GET',
+                url: api.url_base_api + '/'
+            };
+            try {
+                const response = await axios(config);
+                if (response.status == 200) {
+                    setOnline(true);
+                } else {
+                    navigation.navigate('SysOnline')
+                }
+            } catch (error) {
+                navigation.navigate('SysOnline')
+            }
+        } else {
+
+        }
+    }
+
+
+    React.useEffect(() => {
+        if (online == false) {
+            Carregar();
+        }
+    }, [load, navigation]);
+
 
     return (
         <SafeAreaView>
@@ -48,7 +77,7 @@ function RevenuesNew() {
                             <View style={styles.buttonDespesa}>
                                 <TextInput mode="outlined" label="Descrição" value={revenue} onChangeText={onChangeText} />
                                 <Text>  </Text>
-                                <Button icon="plus" mode="contained" onPress={() => AddRevenue()}>
+                                <Button icon="plus-box" mode="contained" onPress={() => AddRevenue()}>
                                     Salvar receita
                                 </Button>
                                 <Text>  </Text>

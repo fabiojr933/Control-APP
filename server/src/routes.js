@@ -57,5 +57,7 @@ routes.get('/grafics/launchTotalAnoMes/:mes/:ano', grafics.launchTotalAnoMes);
 
 routes.post('/upload/image', multer(multerConfig).single('file'), arquivo.uploadImage);
 routes.get('/ListaImage', arquivo.ImageIndex);
+routes.delete('/Image/Delete', arquivo.ImageDelete);
+
 
 module.exports = routes;

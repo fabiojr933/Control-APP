@@ -15,6 +15,7 @@ import axios from 'axios';
 import api from '../../service/api';
 import AwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import { VictoryPie } from "victory-native";
+import NetInfo from "@react-native-community/netinfo";
 
 function Home() {
 
@@ -28,6 +29,7 @@ function Home() {
     const [load, setLoad] = React.useState(null);
     const [sumLaunchExpense, setSumLaunchExpense] = React.useState(0.00);
     const [sumLaunchRevenue, setSumLaunchRevenue] = React.useState(0.00);
+    const [online, setOnline] = React.useState(false);
 
     const [mesOpen, mesSetOpen] = React.useState(false);
     const [mesValue, mesSetValue] = React.useState(null);
@@ -61,8 +63,6 @@ function Home() {
     const [coresExpenseRevenue, setCoresExpenseRevenue] = React.useState([]);
     const [graficDadosExpenseRevenue, setGraficDadosExpenseRevenue] = React.useState([]);
 
-
-   
     async function graficTotal() {
         var dados = [];
         var cores = [];
@@ -70,26 +70,27 @@ function Home() {
         var config = {
             method: 'GET',
             url: api.url_base_api + '/grafics/launchTotalAnoMes/' + mesValue + '/' + anoValue,
-        };
-        console.log(config)
+        };       
         try {
-            const response = await axios(config);
+            const response = await axios(config);         
             if (response.status == 200) {
                 response.data.map((v) => {
                     const letters = '0123456789ABCDEF';
                     let color = '#';
                     for (let i = 0; i < 6; i++) {
                         color += letters[Math.floor(Math.random() * 16)];
-                    }
-                    console.log(v)
+                    }                   
                     dados.push({ 'despesa': v.despesa, y: v.valor.toFixed(2), 'cor': color });
                     cores.push(color);
                 });
+            }else{
+                dados.push({ 'despesa': 'Sem dados', y: 0.00, 'cor': 'rede' });
             }
             setGraficDadosExpenseRevenue(dados);
             setCoresExpenseRevenue(cores)
-        } catch (error) {
-            console.log(error);
+        } catch (error) {  
+            dados.push({ 'despesa': 'Sem dados', y: 0.00, 'cor': 'red' });   
+            setGraficDadosExpenseRevenue(dados);
         }
 
     }
@@ -98,11 +99,46 @@ function Home() {
     async function ContagemTempo() {
         setTimeout(() => {
             setTempo(false);
-        }, 2000);
+        }, 200);
+    }
+    /*
+        async function Carregar() {
+            const unsubscribe = NetInfo.addEventListener(state => {
+                console.log("Connection type", state.type);
+                console.log("Is connected?", state.isConnected);
+                if(state.isConnected === false){
+                    navigation.navigate('SysOnline');
+                }
+            });       
+            unsubscribe();
+        }
+        */
+
+    async function Carregar() {
+        if (online === false) {
+            var config = {
+                method: 'GET',
+                url: api.url_base_api + '/'
+            };
+            try {
+                const response = await axios(config);
+                if (response.status == 200) {
+                    setOnline(true);
+                } else {
+                    navigation.navigate('SysOnline')
+                }
+            } catch (error) {
+                navigation.navigate('SysOnline')
+            }
+        } else {
+
+        }
     }
 
-
     React.useEffect(() => {
+        if (online == false) {
+            Carregar();
+        } 
         setTempo(true);
         setLoad(true);
         mesSetValue(moment().format('MM'));
@@ -114,6 +150,7 @@ function Home() {
         graficTotal();
         ContagemTempo();
         setLoad(false);
+
     }, [load, navigation]);
 
 
@@ -129,7 +166,7 @@ function Home() {
                 setSumLaunchExpense(response.data[0].value.toFixed(2));
             }
         } catch (error) {
-            alert('Ops! ocorreu algum erro');
+            // alert('Ops! ocorreu algum erro');
         }
     }
 
@@ -145,7 +182,7 @@ function Home() {
                 setSumLaunchRevenue(response.data[0].value.toFixed(2));
             }
         } catch (error) {
-            alert('Ops! ocorreu algum erro');
+            // alert('Ops! ocorreu algum erro');
         }
     }
 
@@ -162,7 +199,7 @@ function Home() {
                 setExpenseAll(response.data);
             }
         } catch (error) {
-            alert('Ops! ocorreu algum erro');
+            //  alert('Ops! ocorreu algum erro');
         }
     }
 
@@ -178,7 +215,7 @@ function Home() {
                 setRevenueAll(response.data);
             }
         } catch (error) {
-            alert('Ops! ocorreu algum erro');
+            //  alert('Ops! ocorreu algum erro');
         }
     }
 
@@ -373,34 +410,34 @@ function Home() {
                         open={open}
                         visible
                         icon={open ? 'close' : 'plus'}
-                        actions={[
+                        actions={[                            
                             {
                                 icon: 'star',
                                 label: 'Momentos',
                                 onPress: () => { navigation.navigate('Momento') },
                             },
                             {
-                                icon: 'star',
+                                icon: 'file',
                                 label: 'Relatorio do Fabio',
                                 onPress: () => { navigation.navigate('RelatorioFabio') },
                             },
                             {
-                                icon: 'star',
+                                icon: 'file',
                                 label: 'Relatorio da Flavia',
                                 onPress: () => { navigation.navigate('RelatorioFlavia') },
                             },
                             {
-                                icon: 'star',
+                                icon: 'chart-box',
                                 label: 'Lançamentos do Fabio',
                                 onPress: () => { navigation.navigate('Fabio') },
                             },
                             {
-                                icon: 'heart',
+                                icon: 'chart-box',
                                 label: 'Lançamentos da Flávia',
                                 onPress: () => { navigation.navigate('Flavia') },
                             },
                             {
-                                icon: 'plus',
+                                icon: 'plus-box',
                                 label: 'Novo Lançamento',
                                 onPress: () => { navigation.navigate('LaunchNew') },
                             },

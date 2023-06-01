@@ -12,7 +12,7 @@ app.use(bodyParser.urlencoded({ limit: '100mb', extended: true }));
 app.use(cors());
 app.use('/api/v1/', routes);
 app.use('/upload', express.static(path.resolve('public', 'upload')));
-app.get('/', (req, res) => {
+app.get('/api/v1/', (req, res) => {
     res.send('oi')
 });
 

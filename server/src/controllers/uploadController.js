@@ -1,5 +1,6 @@
 const moment = require('moment');
 const knex = require('../config/connection');
+const fs = require('fs');
 
 class UploadController {
     async uploadImage(req, res) {
@@ -32,5 +33,30 @@ class UploadController {
             console.log(error);
         }
     }
+
+    async ImageDelete(req, res) {
+        var filename = req.body.filename;
+        var id = req.body.id;
+        try {
+            await knex('moments').where({ id: id }).del();       
+
+            var filePath = `./public/upload/${filename}`;
+
+            fs.unlink(filePath, (error) => {
+                if (!error) {
+                  console.log(false);
+                } else {
+                  console.log('Erro ao deletar arquivo.');
+                }
+              });             
+
+            res.status(200).json({ 'ok': 'ok' })
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+        
+
 }
 module.exports = UploadController;

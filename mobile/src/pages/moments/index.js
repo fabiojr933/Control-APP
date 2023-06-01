@@ -1,8 +1,8 @@
 
 import * as React from 'react';
-import { Alert, ScrollView } from 'react-native';
-import { View, StyleSheet } from 'react-native';
-import { Text, Avatar, Provider, Card, Portal, FAB, ActivityIndicator, MD2Colors, DataTable } from 'react-native-paper'; import { SafeAreaView } from 'react-native-safe-area-context';
+import { ScrollView } from 'react-native';
+import { View, StyleSheet, Alert } from 'react-native';
+import { Text, Avatar, Provider, Card, Portal, FAB, ActivityIndicator, MD2Colors, Button } from 'react-native-paper'; import { SafeAreaView } from 'react-native-safe-area-context';
 import { NavigationContext } from '@react-navigation/native';
 import axios from 'axios';
 import api from '../../service/api';
@@ -19,6 +19,7 @@ function Momentos() {
     const [state, setState] = React.useState({ open: false });
     const onStateChange = ({ open }) => setState({ open });
     const { open } = state;
+    const [online, setOnline] = React.useState(false);
 
     async function ContagemTempo() {
         setTimeout(() => {
@@ -38,14 +39,81 @@ function Momentos() {
             if (response.status == 200) {
                 setImage(response.data);
                 navigation.navigate('Momento');
-            }
+            }            
             ContagemTempo();
         } catch (error) {
-            alert('Ops! ocorreu algum erro');
+          //  alert('Ops! ocorreu algum erro');
         }
     }
 
+    async function DeleteImage(id, filename) {
+        setTempo(true)
+        var data = {
+            id: id,
+            filename: filename
+        }
+        navigation.addListener('focus', () => setLoad(!load))
+        var config = {
+            method: 'DELETE',
+            url: api.url_base_api + '/Image/Delete',
+            data: data
+        };
+        try {
+            const response = await axios(config);
+            if (response.status == 200) {
+                LoadImage();
+                navigation.navigate('Momento');
+            }
+            ContagemTempo();
+        } catch (error) {
+          //  alert('Ops! ocorreu algum erro');
+        }
+    }
+
+    async function confirmDelete(id, filename) {
+        Alert.alert(
+            "Atenção!",
+            "Deseja realmente excluir?",
+            [
+                {
+                    text: "Sim",
+                    onPress: () => {
+                        DeleteImage(id, filename);
+                    },
+                },
+                {
+                    text: "Não",
+                },
+            ]
+        );
+    }
+
+    async function Carregar() {
+        if (online === false) {
+            var config = {
+                method: 'GET',
+                url: api.url_base_api + '/'
+            };
+            try {
+                const response = await axios(config);
+                if (response.status == 200) {
+                    setOnline(true);
+                } else {
+                    navigation.navigate('SysOnline')
+                }
+            } catch (error) {
+                navigation.navigate('SysOnline')
+            }
+        } else {
+
+        }
+    }
+
+
     React.useEffect(() => {
+        if (online == false) {
+            Carregar();
+        } 
         LoadImage();
     }, [load, navigation]);
 
@@ -69,6 +137,9 @@ function Momentos() {
                                 <>
                                     <Card>
                                         <Card.Title title="Momentos" left={LeftContent} />
+                                        <Button style={{ marginLeft: '50%', marginRight: 5 }} icon="delete" mode="contained" onPress={() => confirmDelete(v.id, v.filename)}>
+                                            Excluir
+                                        </Button>
                                         <Card.Content>
                                             <Text variant="titleLarge">Dia {v.day}/{v.month}/{v.year}</Text>
                                             <Text variant="bodyMedium">{v.description}</Text>
@@ -79,7 +150,7 @@ function Momentos() {
                                     <Text> </Text>
                                 </>
                             )}
-                           
+
                         </View>
                     </ScrollView>
                 </SafeAreaView>
@@ -88,10 +159,10 @@ function Momentos() {
                     <FAB.Group
                         open={open}
                         visible
-                        icon={open ? 'calendar-today' : 'plus'}
+                        icon={open ? 'close' : 'plus'}
                         actions={[
                             {
-                                icon: 'plus',
+                                icon: 'plus-box',
                                 label: 'Novo momento',
                                 onPress: () => { navigation.navigate('MomentNew') },
                             },

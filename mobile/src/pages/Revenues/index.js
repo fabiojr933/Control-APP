@@ -17,6 +17,7 @@ function Revenues() {
     const { open } = state;
     const [load, setLoad] = useState(true);
     const [tempo, setTempo] = useState(true);
+    const [online, setOnline] = React.useState(false);
 
     const navigation = React.useContext(NavigationContext);
     const [Revenues, setRevenues] = useState([]);
@@ -39,8 +40,32 @@ function Revenues() {
         }
     }
 
+    async function Carregar() {
+        if (online === false) {
+            var config = {
+                method: 'GET',
+                url: api.url_base_api + '/'
+            };
+            try {
+                const response = await axios(config);
+                if (response.status == 200) {
+                    setOnline(true);
+                } else {
+                    navigation.navigate('SysOnline')
+                }
+            } catch (error) {
+                navigation.navigate('SysOnline')
+            }
+        } else {
+
+        }
+    }
+
 
     useEffect(() => {
+        if (online == false) {
+            Carregar();
+        } 
         loadRevenue();
     }, [load, navigation]);
 
@@ -131,10 +156,10 @@ function Revenues() {
                     <FAB.Group
                         open={open}
                         visible
-                        icon={open ? 'calendar-today' : 'plus'}
+                        icon={open ? 'close' : 'plus'}
                         actions={[
                             {
-                                icon: 'plus',
+                                icon: 'plus-box',
                                 label: 'Nova Receita',
                                 onPress: () => { navigation.navigate('RevenuesNew') },
                             },

@@ -28,7 +28,7 @@ const LaunchNew = () => {
 
     ]);
 
-
+    const [online, setOnline] = React.useState(false);
     const [checked, setChecked] = React.useState(false);
     const [revenue, setRevenue] = React.useState([]);
     const [expense, setExpense] = React.useState([]);
@@ -214,7 +214,7 @@ const LaunchNew = () => {
             }
             setExpense(ListExpense);
         } catch (error) {
-            alert('Ops! ocorreu algum erro');
+           // alert('Ops! ocorreu algum erro');
         }
     }
 
@@ -234,13 +234,37 @@ const LaunchNew = () => {
             }
             setRevenue(ListRevenue);
         } catch (error) {
-            alert('Ops! ocorreu algum erro');
+           // alert('Ops! ocorreu algum erro');
+        }
+    }
+
+    async function Carregar() {
+        if (online === false) {
+            var config = {
+                method: 'GET',
+                url: api.url_base_api + '/'
+            };
+            try {
+                const response = await axios(config);
+                if (response.status == 200) {
+                    setOnline(true);
+                } else {
+                    navigation.navigate('SysOnline')
+                }
+            } catch (error) {
+                navigation.navigate('SysOnline')
+            }
+        } else {
+
         }
     }
 
 
 
     useEffect(() => {
+        if (online == false) {
+            Carregar();
+        } 
         loadExpense();
         loadRevenue();
     }, []);
@@ -316,7 +340,7 @@ const LaunchNew = () => {
 
                             <View style={styles.buttonDespesa}>
 
-                                <Button icon="plus" mode="contained" onPress={() => { addLanch() }} >
+                                <Button icon="plus-box" mode="contained" onPress={() => { addLanch() }} >
                                     Salvar Lançamento
                                 </Button>
                                 <Text>  </Text>
