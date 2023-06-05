@@ -35,6 +35,9 @@ routes.delete('/removeLaunchRevenue/:id', launch.removelaunchRevenue);
 routes.delete('/removeLaunchExpenseFixedRodam/:fixedRodam', launch.removeLaunchExpensefixedRodam);
 routes.delete('/removeLaunchRevenueFixedRodam/:fixedRodam', launch.removelaunchRevenuefixedRodam);
 
+routes.delete('/removeLaunchExpenseParcRodam/:ParcRodam', launch.removeLaunchExpenseParcRodam);
+routes.delete('/removelaunchRevenueParcRodam/:ParcRodam', launch.removelaunchRevenueParcRodam);
+
 routes.delete('/removeLaunchExpenseApartirDesde/:fixedRodam/:ano', launch.removeLaunchExpenseApartirDesde);
 routes.delete('/removeLaunchRevenueApartirDesde/:fixedRodam/:ano', launch.removeLaunchRevenueApartirDesde);
 
@@ -61,3 +64,5 @@ routes.delete('/Image/Delete', arquivo.ImageDelete);
 
 
 module.exports = routes;
+
+

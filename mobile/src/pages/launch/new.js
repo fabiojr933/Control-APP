@@ -9,6 +9,27 @@ import api from '../../service/api';
 import { NavigationContext } from '@react-navigation/native';
 import { SelectList } from 'react-native-dropdown-select-list';
 import moment from 'moment';
+import { DatePickerInput, registerTranslation } from 'react-native-paper-dates';
+
+registerTranslation('pt-br', {
+    save: 'Salvar',
+    selectSingle: 'Selecione a data',
+    selectMultiple: 'Selecione Selecione',
+    selectRange: 'Selecione o periodo',
+    notAccordingToDateFormat: (inputFormat) =>
+        `Date format must be ${inputFormat}`,
+    mustBeHigherThan: (date) => `Must be later then ${date}`,
+    mustBeLowerThan: (date) => `Must be earlier then ${date}`,
+    mustBeBetween: (startDate, endDate) =>
+        `Must be between ${startDate} - ${endDate}`,
+    dateIsDisabled: 'dia não é permitido',
+    previous: 'Anterior',
+    next: 'Pesquisar',
+    typeInDate: 'Digite a data',
+    pickDateFromCalendar: 'Escolher data no calendário',
+    close: 'Sair',
+})
+
 const LaunchNew = () => {
     const navigation = React.useContext(NavigationContext);
 
@@ -28,13 +49,17 @@ const LaunchNew = () => {
 
     ]);
 
+    const [inputDate, setInputDate] = React.useState(undefined)
+    const [parc, setParc] = React.useState(false);
     const [online, setOnline] = React.useState(false);
     const [checked, setChecked] = React.useState(false);
+    const [checkedParcelado, setCheckedParcelado] = React.useState(false);
     const [revenue, setRevenue] = React.useState([]);
     const [expense, setExpense] = React.useState([]);
     const [revenueSelected, setRevenueSelected] = React.useState('');
     const [expenseSelected, setExpenseSelected] = React.useState('');
     const [value, setValue] = React.useState('');
+    const [qteParcela, setQteParcela] = React.useState(0);
     const [typeSelected, setTypeSelected] = React.useState('');
     const [type, setType] = React.useState([
         { key: 'Saida', value: 'Saida' },
@@ -66,9 +91,11 @@ const LaunchNew = () => {
         var data = {};
         var fixed = checked == false ? 'N' : 'S';
 
+
+
+
         //FIXED
         if (checked == true) {
-            console.log(Math.floor(Math.random() * 9999999999))
             if (typeSelected == 'Entrada') {
                 data = {
                     value: value,
@@ -77,6 +104,7 @@ const LaunchNew = () => {
                     id_revenue: revenueSelected,
                     day: moment().format('DD'),
                     fixed: fixed,
+                    parc: 'N',
                     fixedRodam: Math.floor(Math.random() * 9999999999)
                 }
             } else {
@@ -87,6 +115,7 @@ const LaunchNew = () => {
                     id_expense: expenseSelected,
                     day: moment().format('DD'),
                     fixed: fixed,
+                    parc: 'N',
                     fixedRodam: Math.floor(Math.random() * 9999999999)
                 }
             }
@@ -156,7 +185,102 @@ const LaunchNew = () => {
             });
             navigation.navigate('Home');
         }
-        else {
+        if (checkedParcelado == true) {
+            // quando é parcelado 
+            var sequencia = Math.floor(Math.random() * 9999999999);
+            var data = {};
+            var fixed = checked == false ? 'N' : 'S';
+            if (typeSelected == 'Entrada') {
+                data = {
+                    value: value,
+                    type: typeSelected,
+                    user: userSelected,
+                    id_revenue: revenueSelected,
+                    day: moment(inputDate).format('DD'),
+                    month: moment(inputDate).format('MM'),
+                    year: moment(inputDate).format('YYYY'),
+                    parc: 'S',
+                    ParcRodam: sequencia
+                }
+
+                var configPar = {
+                    method: 'POST',
+                    url: api.url_base_api + url_api,
+                    data: data
+                };
+
+                console.log(configPar)
+                await axios(configPar);
+
+
+                for (let i = 1; i < qteParcela; i++) {
+                    var adicionarData = moment(inputDate).add(31 * i, 'days');
+                    data = {
+                        value: value,
+                        type: typeSelected,
+                        user: userSelected,
+                        id_revenue: revenueSelected,
+                        day: moment(adicionarData).format('DD'),
+                        month: moment(adicionarData).format('MM'),
+                        year: moment(adicionarData).format('YYYY'),
+                        parc: 'S',
+                        ParcRodam: sequencia
+                    }
+                    var configParData = {
+                        method: 'POST',
+                        url: api.url_base_api + url_api,
+                        data: data
+                    };
+                    await axios(configParData);
+
+                }
+
+
+
+            } else {
+                data = {
+                    value: value,
+                    type: typeSelected,
+                    user: userSelected,
+                    id_expense: expenseSelected,
+                    day: moment(inputDate).format('DD'),
+                    month: moment(inputDate).format('MM'),
+                    year: moment(inputDate).format('YYYY'),
+                    parc: 'S',
+                    ParcRodam: sequencia
+                }
+                var configPar = {
+                    method: 'POST',
+                    url: api.url_base_api + url_api,
+                    data: data
+                };
+                await axios(configPar);
+
+                for (let i = 1; i < qteParcela; i++) {
+                    let adicionarData = moment(inputDate).add(31 * i, 'days');
+                    data = {
+                        value: value,
+                        type: typeSelected,
+                        user: userSelected,
+                        id_expense: expenseSelected,
+                        day: moment(adicionarData).format('DD'),
+                        month: moment(adicionarData).format('MM'),
+                        year: moment(adicionarData).format('YYYY'),
+                        parc: 'S',
+                        ParcRodam: sequencia
+                    }
+                    var configParData = {
+                        method: 'POST',
+                        url: api.url_base_api + url_api,
+                        data: data
+                    };
+                    await axios(configParData);
+
+                }
+            }
+
+        }
+        if (checkedParcelado == false && checked == false) {
             if (typeSelected == 'Entrada') {
                 data = {
                     value: value,
@@ -166,7 +290,8 @@ const LaunchNew = () => {
                     day: moment().format('DD'),
                     month: moment().format('MM'),
                     year: moment().format('YYYY'),
-                    fixed: fixed
+                    fixed: fixed,
+                    parc: 'N'
                 }
             } else {
                 data = {
@@ -177,7 +302,8 @@ const LaunchNew = () => {
                     day: moment().format('DD'),
                     month: moment().format('MM'),
                     year: moment().format('YYYY'),
-                    fixed: fixed
+                    fixed: fixed,
+                    parc: 'N'
                 }
             }
             var config = {
@@ -185,17 +311,15 @@ const LaunchNew = () => {
                 url: api.url_base_api + url_api,
                 data: data
             };
+            const response = await axios(config);
 
-            try {
-                const response = await axios(config);
-                if (response.status == 201) {
-                    navigation.navigate('Home');
-                }
-            } catch (error) {
-                console.log(error)
-                alert('Ops! ocorreu algum erro');
-            }
         }
+
+        navigation.navigate('Home');
+
+
+
+        // Parcelado
     }
 
     async function loadExpense() {
@@ -214,7 +338,7 @@ const LaunchNew = () => {
             }
             setExpense(ListExpense);
         } catch (error) {
-           // alert('Ops! ocorreu algum erro');
+            // alert('Ops! ocorreu algum erro');
         }
     }
 
@@ -234,7 +358,7 @@ const LaunchNew = () => {
             }
             setRevenue(ListRevenue);
         } catch (error) {
-           // alert('Ops! ocorreu algum erro');
+            // alert('Ops! ocorreu algum erro');
         }
     }
 
@@ -264,9 +388,10 @@ const LaunchNew = () => {
     useEffect(() => {
         if (online == false) {
             Carregar();
-        } 
+        }
         loadExpense();
         loadRevenue();
+        setParc(false);
     }, []);
 
     return (
@@ -332,10 +457,58 @@ const LaunchNew = () => {
                                     status={checked ? 'checked' : 'unchecked'}
                                     onPress={() => {
                                         setChecked(!checked);
+                                        setCheckedParcelado(false);
+                                        setParc(false);
                                     }}
                                 />
                                 <Text style={styles.checkedText}>É lançamento fixo? </Text>
                             </View>
+
+
+                            <View style={styles.checked}>
+                                <Checkbox
+                                    label="Starred"
+                                    status={checkedParcelado ? 'checked' : 'unchecked'}
+                                    onPress={() => {
+                                        setCheckedParcelado(!checkedParcelado);
+                                        if (checkedParcelado == false) {
+                                            setChecked(false);
+                                            setParc(true);
+                                        } else {
+                                            setParc(false);
+                                        }
+                                    }}
+                                />
+                                <Text style={styles.checkedText}>É Parcelado? </Text>
+                            </View>
+                            <Text> </Text>
+
+                            {parc === false ? '' :
+                                <>
+
+                                    <View style={{ width: '95%' }}>
+                                        <TextInput
+                                            label="Qtde parcela"
+                                            value={qteParcela}
+                                            mode="outlined"
+                                            keyboardType='numeric'
+                                            onChangeText={qteParcela => setQteParcela(qteParcela)}
+                                        />
+                                    </View>
+                                    <Text> </Text>
+                                    <View style={{ width: '95%' }}>
+                                        <DatePickerInput
+                                            locale="pt-br"
+                                            label="1° vencimento"
+                                            value={inputDate}
+                                            onChange={(d) => setInputDate(d)}
+                                            inputMode="start"
+                                        />
+
+                                    </View>
+
+                                </>
+                            }
                             <Text> </Text>
 
                             <View style={styles.buttonDespesa}>

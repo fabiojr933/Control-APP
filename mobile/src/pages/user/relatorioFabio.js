@@ -2,7 +2,7 @@
 import * as React from 'react';
 import { Alert, ScrollView } from 'react-native';
 import { View, StyleSheet } from 'react-native';
-import { Text, Portal, Provider, Card, List, Button, ActivityIndicator, MD2Colors, DataTable } from 'react-native-paper';
+import { Text, FAB, Portal, Provider, Card, List, Button, ActivityIndicator, MD2Colors, DataTable } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import CardValues from '../../components/cardValues';
 import CardNews from '../../components/cardNews';
@@ -15,8 +15,58 @@ import axios from 'axios';
 import api from '../../service/api';
 import AwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import { VictoryBar, VictoryChart, VictoryTheme, VictoryPie, VictoryBoxPlot } from "victory-native";
+import { PieChart } from "react-native-svg-charts";
 
 function Fabio() {
+
+
+
+
+
+
+    const randomColor = () =>
+        ("#" + ((Math.random() * 0xffffff) << 0).toString(16) + "000000").slice(
+            0,
+            7
+        );
+
+    const data = [
+        {
+            id: 0,
+            value: 720,
+            description: "Alimentação",
+            color: randomColor(),
+        },
+        {
+            id: 1,
+            value: 310,
+            description: "Carro",
+            color: randomColor(),
+        },
+        {
+            id: 2,
+            value: 250,
+            description: "Investimento",
+            color: randomColor(),
+        },
+        {
+            id: 3,
+            value: 321,
+            description: "Outros",
+            color: randomColor(),
+        },
+        {
+            id: 4,
+            value: 121,
+            description: "Bebidas",
+            color: randomColor(),
+        },
+    ];
+
+
+
+
+
 
     const [tempo, setTempo] = React.useState(true);
     const navigation = React.useContext(NavigationContext);
@@ -70,7 +120,7 @@ function Fabio() {
 
     async function graficRevenueExpense() {
         var dados = [];
-        var cores = [];
+
         navigation.addListener('focus', () => setLoad(!load));
         var config = {
             method: 'GET',
@@ -79,24 +129,21 @@ function Fabio() {
         try {
             const response = await axios(config);
             if (response.status == 200) {
+                var id = 1;
                 response.data.map((v) => {
-                    const letters = '0123456789ABCDEF';
-                    let color = '#';
-                    for (let i = 0; i < 6; i++) {
-                        color += letters[Math.floor(Math.random() * 16)];
-                    }
-                    console.log(v)
-                    dados.push({ 'descricao': v.despesa, y: v.valor.toFixed(2), 'cor': color });
-                    cores.push(color);
+                    const randomColor = () =>
+                        ("#" + ((Math.random() * 0xffffff) << 0).toString(16) + "000000").slice(
+                            0,
+                            7
+                        );
+                    dados.push({ id: id, 'description': v.despesa, value: v.valor.toFixed(2), 'color': randomColor() });
                 });
             }
-
             setGraficDadosRevenueExpense(dados);
-            setCoresRevenueExpense(cores)
         } catch (error) {
-            dados.push({ 'descricao': 'Sem dados', y: 0.00, 'cor': 'red' });   
+            dados.push({ id: 1, 'description': 'Sem dados', value: 0.00, 'color': 'red' });
             setGraficDadosRevenueExpense(dados);
-          //  alert(error);
+            //  alert(error);
         }
 
     }
@@ -113,22 +160,22 @@ function Fabio() {
         try {
             const response = await axios(config);
             if (response.status == 200) {
+                var id = 1;
                 response.data.map((v) => {
-                    const letters = '0123456789ABCDEF';
-                    let color = '#';
-                    for (let i = 0; i < 6; i++) {
-                        color += letters[Math.floor(Math.random() * 16)];
-                    }
-                    dados.push({ 'receita': v.description, y: Number(v.valor).toFixed(2), 'cor': color });
-                    cores.push(color);
+                    const randomColor = () =>
+                        ("#" + ((Math.random() * 0xffffff) << 0).toString(16) + "000000").slice(
+                            0,
+                            7
+                        );
+                    dados.push({ id: id, 'description': v.description, value: v.valor.toFixed(2), 'color': randomColor() });
+                    id++;
                 });
             }
             setGraficDadosRevenue(dados);
-            setCoresRevenue(cores)
         } catch (error) {
-            dados.push({ 'receita': 'Sem dados', y: 0.00, 'cor': 'red' });   
+            dados.push({ id: 1, 'description': 'Sem dados', value: 0.00, 'color': 'red' });
             setGraficDadosRevenue(dados);
-          //  alert(error);
+            // alert(error);
         }
 
     }
@@ -137,7 +184,6 @@ function Fabio() {
 
     async function graficExpense() {
         var dados = [];
-        var cores = [];
         navigation.addListener('focus', () => setLoad(!load));
         var config = {
             method: 'GET',
@@ -146,22 +192,22 @@ function Fabio() {
         try {
             const response = await axios(config);
             if (response.status == 200) {
+                var id = 1;
                 response.data.map((v) => {
-                    const letters = '0123456789ABCDEF';
-                    let color = '#';
-                    for (let i = 0; i < 6; i++) {
-                        color += letters[Math.floor(Math.random() * 16)];
-                    }
-                    dados.push({ 'despesa': v.description, y: v.valor.toFixed(2), 'cor': color });
-                    cores.push(color);
+                    const randomColor = () =>
+                        ("#" + ((Math.random() * 0xffffff) << 0).toString(16) + "000000").slice(
+                            0,
+                            7
+                        );
+                    dados.push({ id: id, 'description': v.description, value: v.valor.toFixed(2), 'color': randomColor() });
+                    id++;
                 });
             }
             setGraficDadosExpense(dados);
-            setCoresExpense(cores)
         } catch (error) {
-            dados.push({ 'descricao': 'Sem dados', y: 0.00, 'cor': 'red' });   
+            dados.push({ id: 1, 'description': 'Sem dados', value: 0.00, 'color': 'red' });
             setGraficDadosExpense(dados);
-         //   alert(error);
+            //  alert(error);
         }
 
     }
@@ -196,7 +242,7 @@ function Fabio() {
     React.useEffect(() => {
         if (online == false) {
             Carregar();
-        } 
+        }
         setTempo(true);
         setLoad(true);
         mesSetValue(moment().format('MM'));
@@ -212,7 +258,7 @@ function Fabio() {
         ContagemTempo();
     }, [load, navigation]);
 
-console.log(sumLaunchExpense)
+
     async function SumLaunchExpense() {
         navigation.addListener('focus', () => setLoad(!load))
         var config = {
@@ -225,7 +271,7 @@ console.log(sumLaunchExpense)
                 setSumLaunchExpense(response.data[0].value.toFixed(2));
             }
         } catch (error) {
-          //  alert('Ops! ocorreu algum erro');
+            //  alert('Ops! ocorreu algum erro');
         }
     }
 
@@ -241,7 +287,7 @@ console.log(sumLaunchExpense)
                 setSumLaunchRevenue(response.data[0].value.toFixed(2));
             }
         } catch (error) {
-          //  alert('Ops! ocorreu algum erro');
+            //  alert('Ops! ocorreu algum erro');
         }
     }
 
@@ -254,13 +300,13 @@ console.log(sumLaunchExpense)
         };
         try {
             const response = await axios(config);
-            console.log(response)
+            //    console.log(response)
             if (response.status == 200) {
                 setExpenseAll(response.data);
             }
         } catch (error) {
-            console.log(error)
-          //  alert('Ops! ocorreu algum erro');
+            //   console.log(error)
+            // alert('Ops! ocorreu algum erro');
         }
     }
 
@@ -276,7 +322,7 @@ console.log(sumLaunchExpense)
                 setRevenueAll(response.data);
             }
         } catch (error) {
-           // alert('Ops! ocorreu algum erro');
+            // alert('Ops! ocorreu algum erro');
         }
     }
 
@@ -306,6 +352,31 @@ console.log(sumLaunchExpense)
     }
 
 
+    const pieDataRevenueExpense = graficDadosRevenueExpense.map((item, index) => ({
+        value: item.value,
+        svg: {
+            fill: item.color,
+        },
+        key: `pie-${index}`,
+    }));
+
+
+    const pieDataRevenue = graficDadosRevenue.map((item, index) => ({
+        value: item.value,
+        svg: {
+            fill: item.color,
+        },
+        key: `pie-${index}`,
+    }));
+
+    const pieDataExpense = graficDadosExpense.map((item, index) => ({
+        value: item.value,
+        svg: {
+            fill: item.color,
+        },
+        key: `pie-${index}`,
+    }));
+
 
     if (tempo == true) {
         return (
@@ -323,7 +394,7 @@ console.log(sumLaunchExpense)
                         <View style={styles.container}>
                             <View style={styles.data}>
                                 <DropDownPicker
-                                    maxHeight={600}
+                                    maxHeight={500}
                                     open={mesOpen}
                                     value={mesValue}
                                     items={mesItems}
@@ -350,7 +421,6 @@ console.log(sumLaunchExpense)
                                     onChangeValue={(v) => { LoadListAno(v) }}
                                 />
                             </View>
-
 
                             <Text> </Text>
 
@@ -397,12 +467,8 @@ console.log(sumLaunchExpense)
 
 
 
-
-
-
+                            <Text> </Text>
                             <Text>  </Text>
-                            <Text>  </Text>
-
                             {graficDadosRevenue[0].y == 0 ? '' :
 
                                 <View style={{ marginTop: 10 }}>
@@ -433,6 +499,9 @@ console.log(sumLaunchExpense)
                                 </View>
 
                             }
+
+
+                            <Text>  </Text>
 
                             <Text>  </Text>
 
@@ -466,114 +535,100 @@ console.log(sumLaunchExpense)
                                 </View>
 
                             }
-
+                            <Text>  </Text>
+                            <Text>  </Text>
                             <Text>  </Text>
 
 
+                            {graficDadosRevenue[0].value <= 0.00 ? '' :
+                                <View >
+                                    <Text style={{ fontSize: 20, textAlign: 'center' }}>
+                                        Grafico receitas
+                                    </Text>
 
-                            {graficDadosExpense[0].y == 0 ? '' :
-                                <View style={{ marginTop: 10 }}>
-
-                                    <Card>
-                                        <Card.Title
-                                            title="Grafico de despesas" />
-                                        <Card.Content>
-                                            <VictoryPie
-                                                colorScale={coresExpense}
-                                                data={graficDadosExpense}
-                                            />
-                                        </Card.Content>
-
-                                        {graficDadosExpense.map((item, i) =>
-                                            <>
-
-                                                <View style={{ flexDirection: 'row' }}>
-                                                    <Button style={{ backgroundColor: `${item.cor}`, width: '30%', marginTop: 5, marginBottom: 5, marginLeft: 5 }}></Button>
-                                                    <Button>{item.despesa} R$: {item.y}</Button>
+                                    <View style={styles.cards}>
+                                        <View style={styles.graphic}>
+                                            <PieChart style={{ height: 150 }} data={pieDataRevenue} />
+                                        </View>
+                                        <View style={styles.data9}>
+                                            {graficDadosRevenue.map((item, index) => (
+                                                <View style={styles.dataValues} key={`${index}`}>
+                                                    <View style={[styles.circle, { backgroundColor: item.color }]} />
+                                                    <Text style={{ flex: 1, marginLeft: 10 }}>
+                                                        {item.description}
+                                                    </Text>
+                                                    <Text style={{}}>{`R$ ${item.value}`}</Text>
                                                 </View>
-                                            </>
-                                        )}
-                                    </Card>
-                                </View>
-                            }
+                                            ))}
+                                        </View>
+                                    </View>
+                                </View>}
+
+                            <Text>  </Text>
+                            <Text>  </Text>
 
 
+                            {graficDadosExpense[0].value <= 0.00 ? '' :
+                                <View >
+                                    <Text style={{ fontSize: 20, textAlign: 'center' }}>
+                                        Grafico despesas
+                                    </Text>
 
-                            {graficDadosRevenue[0].y == 0 ? '' :
-                                <View style={{ marginTop: 10 }}>
-
-                                    <Card>
-                                        <Card.Title
-                                            title="Grafico de Receitas" />
-                                        <Card.Content>
-                                            <VictoryPie
-                                                colorScale={coresRevenue}
-                                                data={graficDadosRevenue}
-                                            />
-                                        </Card.Content>
-
-                                        {graficDadosRevenue.map((item, i) =>
-                                            <>
-
-                                                <View style={{ flexDirection: 'row' }}>
-                                                    <Button style={{ backgroundColor: `${item.cor}`, width: '30%', marginTop: 5, marginBottom: 5, marginLeft: 5 }}></Button>
-                                                    <Button>{item.receita} R$: {item.y}</Button>
+                                    <View style={styles.cards}>
+                                        <View style={styles.graphic}>
+                                            <PieChart style={{ height: 150 }} data={pieDataExpense} />
+                                        </View>
+                                        <View style={styles.data9}>
+                                            {graficDadosExpense.map((item, index) => (
+                                                <View style={styles.dataValues} key={`${index}`}>
+                                                    <View style={[styles.circle, { backgroundColor: item.color }]} />
+                                                    <Text style={{ flex: 1, marginLeft: 10 }}>
+                                                        {item.description}
+                                                    </Text>
+                                                    <Text style={{}}>{`R$ ${item.value}`}</Text>
                                                 </View>
-                                            </>
-                                        )}
-                                    </Card>
-                                </View>
-                            }
+                                            ))}
+                                        </View>
+                                    </View>
+                                </View>}
+
+                            <Text>  </Text>
                             <Text>  </Text>
 
-                            {graficDadosRevenueExpense[0].y == 0 ? '' :
+                            {graficDadosRevenueExpense[0].value <= 0.00 ? '' :
+                                <View >
+                                    <Text style={{ fontSize: 20, textAlign: 'center' }}>
+                                        Grafico receitas X despesas
+                                    </Text>
 
-                                <View style={{ marginTop: 10 }}>
-
-                                    <Card>
-                                        <Card.Title
-                                            title="Comparação de Receitas X Despesas" />
-                                        <Card.Content>
-                                            <VictoryPie
-                                                colorScale={coresRevenueExpense}
-                                                data={graficDadosRevenueExpense}
-                                            />
-                                        </Card.Content>
-
-                                        {graficDadosRevenueExpense.map((item, i) =>
-                                            <>
-
-                                                <View style={{ flexDirection: 'row' }}>
-                                                    <Button style={{ backgroundColor: `${item.cor}`, width: '30%', marginTop: 5, marginBottom: 5, marginLeft: 5 }}></Button>
-                                                    <Button>{item.descricao} R$: {item.y}</Button>
+                                    <View style={styles.cards}>
+                                        <View style={styles.graphic}>
+                                            <PieChart style={{ height: 150 }} data={pieDataRevenueExpense} />
+                                        </View>
+                                        <View style={styles.data9}>
+                                            {graficDadosRevenueExpense.map((item, index) => (
+                                                <View style={styles.dataValues} key={`${index}`}>
+                                                    <View style={[styles.circle, { backgroundColor: item.color }]} />
+                                                    <Text style={{ flex: 1, marginLeft: 10 }}>
+                                                        {item.description}
+                                                    </Text>
+                                                    <Text style={{}}>{`R$ ${item.value}`}</Text>
                                                 </View>
-                                            </>
-                                        )}
-                                    </Card>
-                                </View>
-                            }
-                            <Text>  </Text>
-                            <Text>  </Text>
-                            <Text>  </Text>
+                                            ))}
+                                        </View>
+                                    </View>
+                                </View>}
 
-
-
-
-
-                            <Text>  </Text>
-                            <Text>  </Text>
-                            <Text>  </Text>
                         </View>
 
                     </ScrollView>
                 </SafeAreaView>
 
-            </Provider >
+            </Provider>
         );
 
     }
 }
-
 
 const styles = StyleSheet.create({
     container: {
@@ -581,9 +636,6 @@ const styles = StyleSheet.create({
         margin: 10,
     }, listGroup: {
         flexDirection: "row",
-    },
-    tableHeader: {
-        backgroundColor: '#DCDCDC',
     },
     data: {
         zIndex: 2,
@@ -647,7 +699,35 @@ const styles = StyleSheet.create({
         marginBottom: 30,
         textAlign: 'center',
         fontSize: 20
-    }
+    },
+
+    cards: {
+        marginTop: 20,
+        width: "100%",
+        backgroundColor: "white",
+        borderRadius: 12,
+        padding: 20,
+        flexDirection: "row",
+    },
+    graphic: {
+        flex: 1,
+    },
+
+    data9: {
+        flex: 2,
+        paddingLeft: 20,
+    },
+    dataValues: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        flex: 1,
+    },
+    circle: {
+        width: 15,
+        height: 15,
+        backgroundColor: "blue",
+        borderRadius: 10,
+    },
 });
 
 export default Fabio;

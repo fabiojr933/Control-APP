@@ -15,9 +15,71 @@ import axios from 'axios';
 import api from '../../service/api';
 import AwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import { VictoryPie } from "victory-native";
-import NetInfo from "@react-native-community/netinfo";
+import { PieChart } from "react-native-svg-charts";
 
 function Home() {
+
+
+
+    const randomColor = () =>
+        ("#" + ((Math.random() * 0xffffff) << 0).toString(16) + "000000").slice(
+            0,
+            7
+        );
+
+    const data = [
+        {
+            id: 0,
+            value: 720,
+            description: "Alimentação",
+            color: randomColor(),
+        },
+        {
+            id: 1,
+            value: 310,
+            description: "Carro",
+            color: randomColor(),
+        },
+        {
+            id: 2,
+            value: 250,
+            description: "Investimento",
+            color: randomColor(),
+        },
+        {
+            id: 3,
+            value: 321,
+            description: "Outros",
+            color: randomColor(),
+        },
+        {
+            id: 4,
+            value: 121,
+            description: "Bebidas",
+            color: randomColor(),
+        },
+    ];
+
+
+
+
+    //console.log(data)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     const [tempo, setTempo] = React.useState(true);
     const navigation = React.useContext(NavigationContext);
@@ -31,6 +93,7 @@ function Home() {
     const [sumLaunchRevenue, setSumLaunchRevenue] = React.useState(0.00);
     const [online, setOnline] = React.useState(false);
 
+    const [totalEconomia, setTotalEconomia] = React.useState(0);
     const [mesOpen, mesSetOpen] = React.useState(false);
     const [mesValue, mesSetValue] = React.useState(null);
     const [mesItems, mesSetItems] = React.useState([
@@ -62,57 +125,52 @@ function Home() {
 
     const [coresExpenseRevenue, setCoresExpenseRevenue] = React.useState([]);
     const [graficDadosExpenseRevenue, setGraficDadosExpenseRevenue] = React.useState([]);
+    const [economiaDespesa, setEconomiaDespesa] = React.useState(0);
 
     async function graficTotal() {
         var dados = [];
-        var cores = [];
+
         navigation.addListener('focus', () => setLoad(!load));
         var config = {
             method: 'GET',
             url: api.url_base_api + '/grafics/launchTotalAnoMes/' + mesValue + '/' + anoValue,
-        };       
+        };
         try {
-            const response = await axios(config);         
+            const response = await axios(config);
             if (response.status == 200) {
+                var id = 1;
                 response.data.map((v) => {
-                    const letters = '0123456789ABCDEF';
-                    let color = '#';
-                    for (let i = 0; i < 6; i++) {
-                        color += letters[Math.floor(Math.random() * 16)];
-                    }                   
-                    dados.push({ 'despesa': v.despesa, y: v.valor.toFixed(2), 'cor': color });
-                    cores.push(color);
+                    const randomColor = () =>
+                        ("#" + ((Math.random() * 0xffffff) << 0).toString(16) + "000000").slice(
+                            0,
+                            7
+                        );
+                    dados.push({ id: id, 'description': v.despesa, value: v.valor.toFixed(2), 'color': randomColor() });
+                    id++;
                 });
-            }else{
-                dados.push({ 'despesa': 'Sem dados', y: 0.00, 'cor': 'rede' });
+            } else {
+                dados.push({ id: 1, 'description': 'Sem dados', value: 0.00, 'color': 'red' });
             }
             setGraficDadosExpenseRevenue(dados);
-            setCoresExpenseRevenue(cores)
-        } catch (error) {  
-            dados.push({ 'despesa': 'Sem dados', y: 0.00, 'cor': 'red' });   
+            console.log(graficDadosExpenseRevenue)
+        } catch (error) {
+            dados.push({ id: 1, 'description': 'Sem dados', value: 0.00, 'color': 'red' });
             setGraficDadosExpenseRevenue(dados);
         }
 
     }
+
+
+
+
 
 
     async function ContagemTempo() {
         setTimeout(() => {
             setTempo(false);
-        }, 200);
+        }, 2000);
     }
-    /*
-        async function Carregar() {
-            const unsubscribe = NetInfo.addEventListener(state => {
-                console.log("Connection type", state.type);
-                console.log("Is connected?", state.isConnected);
-                if(state.isConnected === false){
-                    navigation.navigate('SysOnline');
-                }
-            });       
-            unsubscribe();
-        }
-        */
+
 
     async function Carregar() {
         if (online === false) {
@@ -138,7 +196,7 @@ function Home() {
     React.useEffect(() => {
         if (online == false) {
             Carregar();
-        } 
+        }
         setTempo(true);
         setLoad(true);
         mesSetValue(moment().format('MM'));
@@ -179,7 +237,12 @@ function Home() {
         try {
             const response = await axios(config);
             if (response.status == 200) {
-                setSumLaunchRevenue(response.data[0].value.toFixed(2));
+                var totalEconomia = (response.data[0].value * 0.20).toFixed(2);
+                var totalReceita = (response.data[0].value - totalEconomia).toFixed(2);
+                var economiaDespesa = (response.data[0].value * 0.60).toFixed(2);
+                setEconomiaDespesa(economiaDespesa);
+                setTotalEconomia(totalEconomia);
+                setSumLaunchRevenue(totalReceita);
             }
         } catch (error) {
             // alert('Ops! ocorreu algum erro');
@@ -211,7 +274,7 @@ function Home() {
         };
         try {
             const response = await axios(config);
-            if (response.status == 200) {
+            if (response.status == 200) {              
                 setRevenueAll(response.data);
             }
         } catch (error) {
@@ -225,6 +288,7 @@ function Home() {
         loadRevenue();
         SumLaunchRevenue();
         SumLaunchExpense();
+        graficTotal();
         ContagemTempo();
     }
 
@@ -235,8 +299,18 @@ function Home() {
         loadRevenue();
         SumLaunchRevenue();
         SumLaunchExpense();
+        graficTotal();
         ContagemTempo();
     }
+
+    const pieData = graficDadosExpenseRevenue.map((item, index) => ({
+        value: item.value,
+        svg: {
+            fill: item.color,
+        },
+        key: `pie-${index}`,
+    }));
+
 
 
 
@@ -287,6 +361,12 @@ function Home() {
                             <Text> </Text>
 
                             <Card>
+                                {sumLaunchExpense < economiaDespesa || sumLaunchExpense <= 0 ? '' :
+                                    <Text style={{ textAlign: 'center', marginBottom: 20, marginTop: 10, fontSize: 15 }}>
+                                        {sumLaunchExpense < economiaDespesa ? '' :
+                                            `Atenção Total de despesa ja ultrapassou 60%  no valor da receita! pare de gastar!`
+                                        }
+                                    </Text>}
                                 <Card.Content>
                                     <View style={styles.dataValues}>
                                         <View
@@ -322,6 +402,46 @@ function Home() {
                                             </View>
                                         </View>
                                     </View>
+
+
+
+                                    <View style={styles.dataValues}>
+                                        <View
+                                            style={{ flexDirection: "row", flex: 1, justifyContent: "center" }}
+                                        >
+                                            <AwesomeIcon
+                                                name="plus"
+                                                size={40}
+                                                color="#154c79"
+                                                style={{ marginRight: 5 }}
+                                            />
+                                            <View>
+                                                <Text>% Economia</Text>
+                                                <Text style={{ fontSize: 23, marginBottom: 10, color: "#154c79" }}>
+                                                    20%
+                                                </Text>
+                                            </View>
+                                        </View>
+                                        <View
+                                            style={{ flexDirection: "row", flex: 1, justifyContent: "center" }}
+                                        >
+                                            <AwesomeIcon
+                                                name="minus"
+                                                size={40}
+                                                color="#154c79"
+                                                style={{ marginRight: 5 }}
+                                            />
+                                            <View>
+                                                <Text>Total Economia</Text>
+                                                <Text style={{ fontSize: 23, marginBottom: 10, color: "#154c79" }}>
+                                                    {totalEconomia}
+                                                </Text>
+                                            </View>
+                                        </View>
+                                    </View>
+
+
+
                                 </Card.Content>
                             </Card>
                             <Text> </Text>
@@ -368,37 +488,32 @@ function Home() {
                             </Card>
 
                             <Text> </Text>
-                            <Text>  </Text>
-
-                            {graficDadosExpenseRevenue[0].y == 0 ? '' :
-                                <View style={{ marginTop: 10 }}>
-
-                                    <Card>
-                                        <Card.Title
-                                            title="Grafico comparação RECEITA X DESPESA" />
-                                        <Card.Content>
-                                            <VictoryPie
-                                                colorScale={coresExpenseRevenue}
-                                                data={graficDadosExpenseRevenue}
-                                            />
-                                        </Card.Content>
-
-                                        {graficDadosExpenseRevenue.map((item, i) =>
-                                            <>
-
-                                                <View style={{ flexDirection: 'row' }}>
-                                                    <Button style={{ backgroundColor: `${item.cor}`, width: '40%', marginTop: 5, marginBottom: 5, marginLeft: 5 }}></Button>
-                                                    <Button>{item.despesa} R$: {item.y}</Button>
-                                                </View>
-                                            </>
-                                        )}
-                                    </Card>
-                                </View>
-                            }
-
-
                             <Text> </Text>
+                            
+                            
+                            {graficDadosExpenseRevenue[0].value <= 0.00 && graficDadosExpenseRevenue[1].value <= 0 ? '' :
+                                <View >
+                                    <Text style={{ fontSize: 20, textAlign: 'center' }}>
+                                        Despesa X Receita
+                                    </Text>
 
+                                    <View style={styles.cards}>
+                                        <View style={styles.graphic}>
+                                            <PieChart style={{ height: 150 }} data={pieData} />
+                                        </View>
+                                        <View style={styles.data9}>
+                                            {graficDadosExpenseRevenue.map((item, index) => (
+                                                <View style={styles.dataValues} key={`${index}`}>
+                                                    <View style={[styles.circle, { backgroundColor: item.color }]} />
+                                                    <Text style={{ flex: 1, marginLeft: 10 }}>
+                                                        {item.description}
+                                                    </Text>
+                                                    <Text style={{}}>{`R$ ${item.value}`}</Text>
+                                                </View>
+                                            ))}
+                                        </View>
+                                    </View>
+                                </View>}
 
 
                         </View>
@@ -410,7 +525,7 @@ function Home() {
                         open={open}
                         visible
                         icon={open ? 'close' : 'plus'}
-                        actions={[                            
+                        actions={[
                             {
                                 icon: 'star',
                                 label: 'Momentos',
@@ -516,6 +631,35 @@ const styles = StyleSheet.create({
     desenvolvido: {
         textAlign: 'center',
         marginTop: 50
+    },
+
+
+    cards: {
+        marginTop: 20,
+        width: "100%",
+        backgroundColor: "white",
+        borderRadius: 12,
+        padding: 20,
+        flexDirection: "row",
+    },
+    graphic: {
+        flex: 1,
+    },
+
+    data9: {
+        flex: 2,
+        paddingLeft: 20,
+    },
+    dataValues: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        flex: 1,
+    },
+    circle: {
+        width: 15,
+        height: 15,
+        backgroundColor: "blue",
+        borderRadius: 10,
     },
 });
 

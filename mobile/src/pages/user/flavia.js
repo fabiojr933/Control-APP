@@ -2,7 +2,7 @@
 import * as React from 'react';
 import { Alert, ScrollView } from 'react-native';
 import { View, StyleSheet } from 'react-native';
-import { Text, FAB, Portal, Provider, Card, List, Button, ActivityIndicator, MD2Colors, DataTable } from 'react-native-paper';
+import { Text, Portal, Provider, Card, List, Button, ActivityIndicator, MD2Colors, DataTable, Modal, PaperProvider } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import CardValues from '../../components/cardValues';
 import CardNews from '../../components/cardNews';
@@ -14,9 +14,29 @@ import moment from 'moment';
 import axios from 'axios';
 import api from '../../service/api';
 import AwesomeIcon from 'react-native-vector-icons/FontAwesome';
-import { VictoryBar, VictoryChart, VictoryTheme, VictoryPie, VictoryBoxPlot } from "victory-native";
+
 
 function Flavia() {
+
+
+
+    const [visible, setVisible] = React.useState(false);
+    const showModal = () => setVisible(true);
+    const hideModal = () => setVisible(false);
+    const containerStyle = { backgroundColor: 'white', padding: 40, zIndex: 3 };
+    const [idFixo, setIdFixo] = React.useState(0);
+    const [fixedRodamId, setFixedRodamId] = React.useState(0);
+
+
+    const [visibleRevenue, setVisibleRevenue] = React.useState(false);
+    const showModalRevenue = () => setVisibleRevenue(true);
+    const hideModalRevenue = () => setVisibleRevenue(false);
+    const containerStyleRevenue = { backgroundColor: 'white', padding: 40, zIndex: 3 };
+    const [idFixoRevenue, setIdFixoRevenue] = React.useState(0);
+    const [fixedRodamIdRevenue, setFixedRodamIdRevenue] = React.useState(0);
+
+
+
 
     const [tempo, setTempo] = React.useState(true);
     const navigation = React.useContext(NavigationContext);
@@ -48,17 +68,6 @@ function Flavia() {
 
     ]);
 
-
-
-    const [coresExpense, setCoresExpense] = React.useState([]);
-    const [graficDadosExpense, setGraficDadosExpense] = React.useState([]);
-
-    const [coresRevenue, setCoresRevenue] = React.useState([]);
-    const [graficDadosRevenue, setGraficDadosRevenue] = React.useState([]);
-
-    const [coresRevenueExpense, setCoresRevenueExpense] = React.useState([]);
-    const [graficDadosRevenueExpense, setGraficDadosRevenueExpense] = React.useState([]);
-
     const [anoOpen, anoSetOpen] = React.useState(false);
     const [anoValue, anoSetValue] = React.useState(null);
     const [anoItems, anoSetItems] = React.useState([
@@ -68,7 +77,7 @@ function Flavia() {
         { label: '2025', value: '2025' },
     ]);
 
-    
+
     async function ContagemTempo() {
         setTimeout(() => {
             setTempo(false);
@@ -99,7 +108,7 @@ function Flavia() {
     React.useEffect(() => {
         if (online == false) {
             Carregar();
-        } 
+        }
         setTempo(true);
         setLoad(true);
         mesSetValue(moment().format('MM'));
@@ -125,7 +134,7 @@ function Flavia() {
                 setSumLaunchExpense(response.data[0].value.toFixed(2));
             }
         } catch (error) {
-          //  alert('Ops! ocorreu algum erro');
+            //   alert('Ops! ocorreu algum erro');
         }
     }
 
@@ -141,7 +150,7 @@ function Flavia() {
                 setSumLaunchRevenue(response.data[0].value.toFixed(2));
             }
         } catch (error) {
-         //   alert('Ops! ocorreu algum erro');
+            //  alert('Ops! ocorreu algum erro');
         }
     }
 
@@ -160,7 +169,7 @@ function Flavia() {
             }
         } catch (error) {
             console.log(error)
-         //   alert('Ops! ocorreu algum erro');
+            // alert('Ops! ocorreu algum erro');
         }
     }
 
@@ -173,10 +182,11 @@ function Flavia() {
         try {
             const response = await axios(config);
             if (response.status == 200) {
+                console.log(response.data)
                 setRevenueAll(response.data);
             }
         } catch (error) {
-          //  alert('Ops! ocorreu algum erro');
+            //   alert('Ops! ocorreu algum erro');
         }
     }
 
@@ -195,12 +205,12 @@ function Flavia() {
         loadExpense();
         loadRevenue();
         SumLaunchRevenue();
-        SumLaunchExpense();        
+        SumLaunchExpense();
         ContagemTempo();
     }
 
     async function removeExpenseSomenteEsse(id) {
-        navigation.addListener('focus', () => setLoad(!load))
+        //   navigation.addListener('focus', () => setLoad(!load))
         var config = {
             method: 'DELETE',
             url: api.url_base_api + '/removeLaunchExpense/' + id,
@@ -208,10 +218,15 @@ function Flavia() {
         try {
             const response = await axios(config);
             if (response.status == 200) {
-                navigation.navigate('Home');
+                loadExpense();
+                loadRevenue();
+                SumLaunchExpense();
+                SumLaunchRevenue();
+                setVisible(false)
+                navigation.navigate('Flavia');
             }
         } catch (error) {
-          //  alert('Ops! ocorreu algum erro');
+            alert('Ops! ocorreu algum erro');
         }
     }
 
@@ -225,11 +240,16 @@ function Flavia() {
         try {
             const response = await axios(config);
             if (response.status == 200) {
-                navigation.navigate('Home');
+                loadExpense();
+                loadRevenue();
+                SumLaunchExpense();
+                SumLaunchRevenue();
+                setVisible(false)
+                navigation.navigate('Flavia');
             }
         } catch (error) {
             console.log(error)
-          //  alert('Ops! ocorreu algum erro');
+            //  alert('Ops! ocorreu algum erro');
         }
     }
 
@@ -243,11 +263,16 @@ function Flavia() {
         try {
             const response = await axios(config);
             if (response.status == 200) {
-                navigation.navigate('Home');
+                loadExpense();
+                loadRevenue();
+                SumLaunchExpense();
+                SumLaunchRevenue();
+                setVisible(false)
+                navigation.navigate('Flavia');
             }
         } catch (error) {
             console.log(error)
-         //   alert('Ops! ocorreu algum erro');
+            // alert('Ops! ocorreu algum erro');
         }
     }
 
@@ -261,11 +286,16 @@ function Flavia() {
         try {
             const response = await axios(config);
             if (response.status == 200) {
-                navigation.navigate('Home');
+                loadExpense();
+                loadRevenue();
+                SumLaunchExpense();
+                SumLaunchRevenue();
+                setVisibleRevenue(false)
+                navigation.navigate('Flavia');
             }
         } catch (error) {
             console.log(error)
-          //  alert('Ops! ocorreu algum erro');
+            //  alert('Ops! ocorreu algum erro');
         }
     }
 
@@ -279,11 +309,16 @@ function Flavia() {
         try {
             const response = await axios(config);
             if (response.status == 200) {
-                navigation.navigate('Home');
+                loadExpense();
+                loadRevenue();
+                SumLaunchExpense();
+                SumLaunchRevenue();
+                setVisibleRevenue(false)
+                navigation.navigate('Flavia');
             }
         } catch (error) {
             console.log(error)
-            alert('Ops! ocorreu algum erro');
+            // alert('Ops! ocorreu algum erro');
         }
     }
 
@@ -296,43 +331,91 @@ function Flavia() {
         try {
             const response = await axios(config);
             if (response.status == 200) {
-                navigation.navigate('Home');
+                loadExpense();
+                loadRevenue();
+                SumLaunchExpense();
+                SumLaunchRevenue();
+                setVisibleRevenue(false)
+                navigation.navigate('Flavia');
             }
         } catch (error) {
-          //  alert('Ops! ocorreu algum erro');
+            //  alert('Ops! ocorreu algum erro');
+        }
+    }
+
+    async function removeLaunchExpenseParcRodam(ParcRodam) {
+
+        navigation.addListener('focus', () => setLoad(!load))
+        var config = {
+            method: 'DELETE',
+            url: api.url_base_api + '/removeLaunchExpenseParcRodam/' + ParcRodam,
+        };
+        try {
+            const response = await axios(config);
+            if (response.status == 200) {
+                loadExpense();
+                loadRevenue();
+                SumLaunchExpense();
+                SumLaunchRevenue();
+                navigation.navigate('Flavia');
+            }
+        } catch (error) {
+            console.log(error)
+            // alert('Ops! ocorreu algum erro');
+        }
+    }
+
+    async function removeLaunchRevenueParcRodam(ParcRodam) {
+
+        navigation.addListener('focus', () => setLoad(!load))
+        var config = {
+            method: 'DELETE',
+            url: api.url_base_api + '/removeLaunchRevenueParcRodam/' + ParcRodam,
+        };
+        try {
+            const response = await axios(config);
+            if (response.status == 200) {
+                loadExpense();
+                loadRevenue();
+                SumLaunchExpense();
+                SumLaunchRevenue();
+                navigation.navigate('Flavia');
+            }
+        } catch (error) {
+            console.log(error)
+            // alert('Ops! ocorreu algum erro');
         }
     }
 
 
-    async function removeLaunchExpense(id, fixed, fixedRodam) {
 
+    async function removeLaunchExpense(id, fixed, fixedRodam, parc, ParcRodam) {
+        console.log(id, fixed, fixedRodam, parc, ParcRodam)
         if (fixed == 'S') {
+            setFixedRodamId(fixedRodam);
+            setIdFixo(id);
+            setVisible(true);
+        } if (parc == 'S') {
             Alert.alert(
                 "Atenção!",
-                "Esse é um lançamento fixo Deseja excluir?",
+                "Esse é um lançamento parcelado Deseja excluir todos?",
                 [
 
                     {
-                        text: "A partir deste",
+                        text: "Sim",
                         onPress: () => {
-                            removeLaunchExpenseApartirDesde(fixedRodam);
+                            removeLaunchExpenseParcRodam(ParcRodam);
                         },
                     },
                     {
-                        text: "Somente esse",
+                        text: "Não",
                         onPress: () => {
-                            removeExpenseSomenteEsse(id);
-                        },
-                    },
-                    {
-                        text: "Todos",
-                        onPress: () => {
-                            removeExpenseSomenteTodos(fixedRodam);
+                            console.log('')
                         },
                     }
                 ]
             );
-        } else {
+        } if (fixed == 'N' && parc == 'N') {
             navigation.addListener('focus', () => setLoad(!load))
             var config = {
                 method: 'DELETE',
@@ -342,11 +425,13 @@ function Flavia() {
                 const response = await axios(config);
                 if (response.status == 200) {
                     loadExpense();
+                    loadRevenue();
                     SumLaunchExpense();
+                    SumLaunchRevenue();
                     navigation.navigate('Flavia');
                 }
             } catch (error) {
-             //   alert('Ops! ocorreu algum erro');
+                //  alert('Ops! ocorreu algum erro');
             }
         }
 
@@ -354,36 +439,33 @@ function Flavia() {
     }
 
 
-
-    async function removeLaunchRevenue(id, fixed, fixedRodam) {
+    async function removeLaunchRevenue(id, fixed, fixedRodam, parc, ParcRodam) {
         console.log(id, fixed, fixedRodam)
         if (fixed == 'S') {
+            setFixedRodamIdRevenue(fixedRodam);
+            setIdFixoRevenue(id);
+            setVisibleRevenue(true);
+        } if (parc == 'S') {
             Alert.alert(
                 "Atenção!",
-                "Esse é um lançamento fixo Deseja excluir?",
+                "Esse é um lançamento parcelado Deseja excluir todos?",
                 [
 
                     {
-                        text: "A partir deste",
+                        text: "Sim",
                         onPress: () => {
-                            removeLaunchRevenueApartirDesde(fixedRodam);
+                            removeLaunchRevenueParcRodam(ParcRodam);
                         },
                     },
                     {
-                        text: "Somente esse",
+                        text: "Não",
                         onPress: () => {
-                            removeLaunchRevenueEsse(id);
-                        },
-                    },
-                    {
-                        text: "Todos",
-                        onPress: () => {
-                            removeLaunchRevenueTodos(fixedRodam);
+                            console.log('')
                         },
                     }
                 ]
             );
-        } else {
+        } if (fixed == 'N' && parc == 'N') {
             navigation.addListener('focus', () => setLoad(!load))
             var config = {
                 method: 'DELETE',
@@ -397,14 +479,14 @@ function Flavia() {
                     navigation.navigate('Flavia');
                 }
             } catch (error) {
-              //  alert('Ops! ocorreu algum erro');
+                //  alert('Ops! ocorreu algum erro');
             }
         }
 
     }
 
 
-    async function confirmDeleteExpense(id, fixed, fixedRodam) {
+    async function confirmDeleteExpense(id, fixed, fixedRodam, parc, ParcRodam) {
 
         Alert.alert(
             "Atenção!",
@@ -413,7 +495,7 @@ function Flavia() {
                 {
                     text: "Sim",
                     onPress: () => {
-                        removeLaunchExpense(id, fixed, fixedRodam);
+                        removeLaunchExpense(id, fixed, fixedRodam, parc, ParcRodam);
                     },
                 },
                 {
@@ -423,8 +505,9 @@ function Flavia() {
         );
     }
 
-    async function confirmDeleteRevenue(id, fixed, fixedRodam) {
+    async function confirmDeleteRevenue(id, fixed, fixedRodam, parc, ParcRodam) {
 
+        console.log(id, fixed, fixedRodam, parc, ParcRodam)
 
         Alert.alert(
             "Atenção!",
@@ -433,7 +516,7 @@ function Flavia() {
                 {
                     text: "Sim",
                     onPress: () => {
-                        removeLaunchRevenue(id, fixed, fixedRodam);
+                        removeLaunchRevenue(id, fixed, fixedRodam, parc, ParcRodam);
                     },
                 },
                 {
@@ -442,7 +525,6 @@ function Flavia() {
             ]
         );
     }
-
 
 
     if (tempo == true) {
@@ -551,7 +633,7 @@ function Flavia() {
                                                         <>
                                                             <DataTable.Row>
                                                                 <DataTable.Cell >{item.description}   R$: {item.value} </DataTable.Cell>
-                                                                <Button mode="Text" onPress={() => confirmDeleteExpense(item.id, item.fixed, item.fixedRodam)}>x</Button>
+                                                                <Button mode="Text" onPress={() => confirmDeleteExpense(item.id, item.fixed, item.fixedRodam, item.parc, item.ParcRodam)}>x</Button>
                                                             </DataTable.Row>
                                                             <Text>  </Text>
                                                         </>
@@ -570,7 +652,7 @@ function Flavia() {
                                                         <>
                                                             <DataTable.Row>
                                                                 <DataTable.Cell >{item.description}   R$: {item.value} </DataTable.Cell>
-                                                                <Button mode="Text" onPress={() => confirmDeleteRevenue(item.id, item.fixed, item.fixedRodam)}>x</Button>
+                                                                <Button mode="Text" onPress={() => confirmDeleteRevenue(item.id, item.fixed, item.fixedRodam, item.parc, item.ParcRodam)}>x</Button>
                                                             </DataTable.Row>
                                                             <Text>  </Text>
 
@@ -583,17 +665,40 @@ function Flavia() {
                                     </List.AccordionGroup>
                                 </Card.Content>
                             </Card>
-                          
 
                             <Text>  </Text>
                             <Text>  </Text>
                             <Text>  </Text>
                         </View>
 
+
+                        {visible == false ? '' :
+
+                            <Modal visible={visible} onDismiss={hideModal} contentContainerStyle={containerStyle}>
+                                <Text>Atenção!, Esse é um lançamento fixo Deseja excluir? </Text>
+                                <Button onPress={() => removeExpenseSomenteEsse(idFixo)}>Somente esse</Button>
+                                <Button onPress={() => removeLaunchExpenseApartirDesde(fixedRodamId)} >A partir deste</Button>
+                                <Button onPress={() => removeExpenseSomenteTodos(fixedRodamId)}>Todos</Button>
+                                <Button onPress={hideModal} >Sair</Button>
+                            </Modal>
+                        }
+
+
+                        {visibleRevenue == false ? '' :
+
+                            <Modal visible={visibleRevenue} onDismiss={hideModalRevenue} contentContainerStyle={containerStyleRevenue}>
+                                <Text>Atenção!, Esse é um lançamento fixo Deseja excluir? </Text>
+                                <Button onPress={() => removeLaunchRevenueEsse(idFixoRevenue)}>Somente esse</Button>
+                                <Button onPress={() => removeLaunchRevenueApartirDesde(fixedRodamIdRevenue)} >A partir deste</Button>
+                                <Button onPress={() => removeLaunchRevenueTodos(fixedRodamIdRevenue)}>Todos</Button>
+                                <Button onPress={hideModalRevenue} >Sair</Button>
+                            </Modal>
+                        }
+
                     </ScrollView>
                 </SafeAreaView>
 
-            </Provider>
+            </Provider >
         );
 
     }
@@ -605,6 +710,9 @@ const styles = StyleSheet.create({
         margin: 10,
     }, listGroup: {
         flexDirection: "row",
+    },
+    tableHeader: {
+        backgroundColor: '#DCDCDC',
     },
     data: {
         zIndex: 2,
