@@ -38,8 +38,8 @@ routes.delete('/removeLaunchRevenueFixedRodam/:fixedRodam', launch.removelaunchR
 routes.delete('/removeLaunchExpenseParcRodam/:ParcRodam', launch.removeLaunchExpenseParcRodam);
 routes.delete('/removelaunchRevenueParcRodam/:ParcRodam', launch.removelaunchRevenueParcRodam);
 
-routes.delete('/removeLaunchExpenseApartirDesde/:fixedRodam/:ano', launch.removeLaunchExpenseApartirDesde);
-routes.delete('/removeLaunchRevenueApartirDesde/:fixedRodam/:ano', launch.removeLaunchRevenueApartirDesde);
+routes.delete('/removeLaunchExpenseApartirDesde', launch.removeLaunchExpenseApartirDesde);
+routes.delete('/removeLaunchRevenueApartirDesde/:data', launch.removeLaunchRevenueApartirDesde);
 
 routes.get('/AllLaunchExpense/:month/:year', launch.AllLaunchExpense);
 routes.get('/AllLaunchRevenue/:month/:year', launch.AllLaunchRevenue);

@@ -14,6 +14,7 @@ function ExpensesNew() {
     const [expense, setExpense] = React.useState('');
     const onChangeText = expense => setExpense(expense);
     const [online, setOnline] = React.useState(false);
+    const [load, setLoad] = useState(true);
     
     async function AddDespesa() {
         if (!expense) {

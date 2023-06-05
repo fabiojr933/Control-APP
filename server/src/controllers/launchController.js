@@ -18,7 +18,8 @@ class launchController {
                 id_expense: req.body.id_expense,
                 fixedRodam: req.body.fixedRodam,
                 ParcRodam: req.body.ParcRodam,
-                parc: req.body.parc
+                parc: req.body.parc,
+                data: req.body.data
             }
             await knex('launchExpense').insert(data);
             return res.status(201).json(data);
@@ -43,7 +44,8 @@ class launchController {
                 id_revenue: req.body.id_revenue,
                 fixedRodam: req.body.fixedRodam,
                 ParcRodam: req.body.ParcRodam,
-                parc: req.body.parc
+                parc: req.body.parc,
+                data: req.body.data
             }
             await knex('launchRevenue').insert(data);
             return res.status(201).json(data);
@@ -136,13 +138,13 @@ class launchController {
 
 
     async removeLaunchExpenseApartirDesde(req, res) {
-        const fixedRodam = req.params.fixedRodam;
-        const ano = req.params.ano;
+       
+        const data = req.params.data;
         try {
-            if (!fixedRodam || !ano) {
+            if (!data) {
                 return res.status(400).json({ error: 'É preciso informar o lançamento' });
             }
-            await knex('launchExpense').whereRaw(`launchExpense.year >= ${ano} and launchExpense.fixedRodam = ${fixedRodam}`).del();
+            await knex('launchExpense').whereRaw(`launchExpense.data >= ${data}`).del();
             return res.status(200).json({ ok: 'ok' });
         } catch (error) {
             return res.status(400).json({ error: 'Ops aconteceu um erro! chama o Fabio' });
@@ -150,13 +152,12 @@ class launchController {
     }
 
     async removeLaunchRevenueApartirDesde(req, res) {
-        const fixedRodam = req.params.fixedRodam;
-        const ano = req.params.ano;
+        const data = req.params.data;
         try {
-            if (!fixedRodam || !ano) {
+            if (!data) {
                 return res.status(400).json({ error: 'É preciso informar o lançamento' });
             }
-            await knex('launchRevenue').whereRaw(`launchRevenue.year >= ${ano} and launchRevenue.fixedRodam = ${fixedRodam}`).del();
+            await knex('launchRevenue').whereRaw(`launchRevenue.data >= ${data}`).del();
             return res.status(200).json({ ok: 'ok' });
         } catch (error) {
             console.log(error)
@@ -232,7 +233,7 @@ class launchController {
             let month = req.params.month;
             let year = req.params.year;
             let user = req.params.user;
-            let dados = await knex.raw(`select launchExpense.id, launchExpense.fixed, launchExpense.fixedRodam, launchExpense.parc, launchExpense.ParcRodam, expense.description, launchExpense.value from launchExpense 
+            let dados = await knex.raw(`select launchExpense.id, launchExpense.fixed, launchExpense.fixedRodam, launchExpense.data, launchExpense.parc, launchExpense.ParcRodam, expense.description, launchExpense.value from launchExpense 
             join expense on expense.id = launchExpense.id_expense
             where launchExpense.month = ${month} and launchExpense.year = ${year}  and launchExpense.user = "${user}"`);
             return res.status(200).json(dados);
@@ -247,7 +248,7 @@ class launchController {
             let month = req.params.month;
             let year = req.params.year;
             let user = req.params.user;
-            let dados = await knex.raw(`select launchRevenue.id, launchRevenue.fixed, launchRevenue.fixedRodam, launchRevenue.parc, launchRevenue.ParcRodam, revenue.description, launchRevenue.value from launchRevenue 
+            let dados = await knex.raw(`select launchRevenue.id, launchRevenue.fixed, launchRevenue.fixedRodam, launchRevenue.data, launchRevenue.parc, launchRevenue.ParcRodam, revenue.description, launchRevenue.value from launchRevenue 
             join revenue on revenue.id = launchRevenue.id_revenue
             where launchRevenue.month = ${month} and launchRevenue.year = ${year}  and launchRevenue.user = "${user}"`);
             return res.status(200).json(dados);

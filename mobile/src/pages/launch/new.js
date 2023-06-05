@@ -97,92 +97,106 @@ const LaunchNew = () => {
         //FIXED
         if (checked == true) {
             if (typeSelected == 'Entrada') {
-                data = {
+                var rodamFixo = Math.floor(Math.random() * 9999999999);
+
+                data2 = {
                     value: value,
                     type: typeSelected,
                     user: userSelected,
                     id_revenue: revenueSelected,
                     day: moment().format('DD'),
+                    month: moment().format('MM'),
+                    year: moment().format('YYYY'),
                     fixed: fixed,
                     parc: 'N',
-                    fixedRodam: Math.floor(Math.random() * 9999999999)
+                    fixedRodam: rodamFixo,
+                    data: moment().format('DD/MM/YYYY')
+                }
+                var configParData2 = {
+                    method: 'POST',
+                    url: api.url_base_api + url_api,
+                    data: data2
+                };
+                console.log(data)
+                await axios(configParData2);
+
+                //////////////////////////////////////////////////////////
+
+                for (let i = 1; i < 96; i++) {
+                    var adicionarData = moment().add(31 * i, 'days');
+                    if (moment(adicionarData).format('YYYY') <= 2030) {
+                        data = {
+                            value: value,
+                            type: typeSelected,
+                            user: userSelected,
+                            id_revenue: revenueSelected,
+                            day: moment(adicionarData).format('DD'),
+                            month: moment(adicionarData).format('MM'),
+                            year: moment(adicionarData).format('YYYY'),
+                            fixed: fixed,
+                            parc: 'N',
+                            fixedRodam: rodamFixo,
+                            data: moment(adicionarData).format('DD/MM/YYYY')
+                        }
+                        var configData = {
+                            method: 'POST',
+                            url: api.url_base_api + url_api,
+                            data: data
+                        };
+                        console.log(data)
+                        await axios(configData);
+                    }
                 }
             } else {
-                data = {
+                var rodamFixo = Math.floor(Math.random() * 9999999999);
+                var data2 = {
                     value: value,
                     type: typeSelected,
                     user: userSelected,
                     id_expense: expenseSelected,
                     day: moment().format('DD'),
+                    month: moment().format('MM'),
+                    year: moment().format('YYYY'),
                     fixed: fixed,
                     parc: 'N',
-                    fixedRodam: Math.floor(Math.random() * 9999999999)
+                    fixedRodam: rodamFixo,
+                    data: moment().format('DD/MM/YYYY')
                 }
-            }
+                var configParData2 = {
+                    method: 'POST',
+                    url: api.url_base_api + url_api,
+                    data: data2
+                };
+                axios(configParData2);
+                ///////////////////////////////////
+                for (let i = 1; i < 96; i++) {
+                    var adicionarData = moment().add(31 * i, 'days');
 
-            mesItems.map((v) => {
-                var dados2023 = { ...data, month: v.value, year: '2023' }
-                var dados2024 = { ...data, month: v.value, year: '2024' }
-                var dados2025 = { ...data, month: v.value, year: '2025' }
-                var dados2026 = { ...data, month: v.value, year: '2026' }
-                var dados2027 = { ...data, month: v.value, year: '2027' }
-                var dados2028 = { ...data, month: v.value, year: '2028' }
-                var dados2029 = { ...data, month: v.value, year: '2029' }
-                var dados2030 = { ...data, month: v.value, year: '2030' }
+                    if (moment(adicionarData).format('YYYY') <= 2030) {
+                        data = {
+                            value: value,
+                            type: typeSelected,
+                            user: userSelected,
+                            id_expense: expenseSelected,
+                            day: moment(adicionarData).format('DD'),
+                            month: moment(adicionarData).format('MM'),
+                            year: moment(adicionarData).format('YYYY'),
+                            fixed: fixed,
+                            parc: 'N',
+                            fixedRodam: rodamFixo,
+                            data: moment(adicionarData).format('DD/MM/YYYY')
+                        }
+                        var configParData = {
+                            method: 'POST',
+                            url: api.url_base_api + url_api,
+                            data: data
+                        };
+                        await axios(configParData);
+                    }
 
-                var config2023 = {
-                    method: 'POST',
-                    url: api.url_base_api + url_api,
-                    data: dados2023
-                };
-                var config2024 = {
-                    method: 'POST',
-                    url: api.url_base_api + url_api,
-                    data: dados2024
-                };
-                var config2025 = {
-                    method: 'POST',
-                    url: api.url_base_api + url_api,
-                    data: dados2025
-                };
+                }
 
-                var config2026 = {
-                    method: 'POST',
-                    url: api.url_base_api + url_api,
-                    data: dados2026
-                };
-
-                var config2027 = {
-                    method: 'POST',
-                    url: api.url_base_api + url_api,
-                    data: dados2027
-                };
-                var config2028 = {
-                    method: 'POST',
-                    url: api.url_base_api + url_api,
-                    data: dados2028
-                };
-
-                var config2029 = {
-                    method: 'POST',
-                    url: api.url_base_api + url_api,
-                    data: dados2029
-                };
-                var config2030 = {
-                    method: 'POST',
-                    url: api.url_base_api + url_api,
-                    data: dados2030
-                };
-
-                axios(config2023);
-                axios(config2024);
-                axios(config2025);
-                axios(config2026);
-                axios(config2027);
-                axios(config2028);
-                axios(config2029);
-                axios(config2030);
-            });
+            };
             navigation.navigate('Home');
         }
         if (checkedParcelado == true) {
@@ -200,7 +214,8 @@ const LaunchNew = () => {
                     month: moment(inputDate).format('MM'),
                     year: moment(inputDate).format('YYYY'),
                     parc: 'S',
-                    ParcRodam: sequencia
+                    ParcRodam: sequencia,
+                    data: moment().format('DD/MM/YYYY')
                 }
 
                 var configPar = {
@@ -224,7 +239,8 @@ const LaunchNew = () => {
                         month: moment(adicionarData).format('MM'),
                         year: moment(adicionarData).format('YYYY'),
                         parc: 'S',
-                        ParcRodam: sequencia
+                        ParcRodam: sequencia,
+                        data: moment(adicionarData).format('DD/MM/YYYY')
                     }
                     var configParData = {
                         method: 'POST',
@@ -247,7 +263,8 @@ const LaunchNew = () => {
                     month: moment(inputDate).format('MM'),
                     year: moment(inputDate).format('YYYY'),
                     parc: 'S',
-                    ParcRodam: sequencia
+                    ParcRodam: sequencia,
+                    data: moment(adicionarData).format('DD/MM/YYYY')
                 }
                 var configPar = {
                     method: 'POST',
@@ -267,7 +284,8 @@ const LaunchNew = () => {
                         month: moment(adicionarData).format('MM'),
                         year: moment(adicionarData).format('YYYY'),
                         parc: 'S',
-                        ParcRodam: sequencia
+                        ParcRodam: sequencia,
+                        data: moment(adicionarData).format('DD/MM/YYYY')
                     }
                     var configParData = {
                         method: 'POST',
@@ -291,7 +309,8 @@ const LaunchNew = () => {
                     month: moment().format('MM'),
                     year: moment().format('YYYY'),
                     fixed: fixed,
-                    parc: 'N'
+                    parc: 'N',
+                    data: moment().format('DD/MM/YYYY')
                 }
             } else {
                 data = {
@@ -303,7 +322,8 @@ const LaunchNew = () => {
                     month: moment().format('MM'),
                     year: moment().format('YYYY'),
                     fixed: fixed,
-                    parc: 'N'
+                    parc: 'N',
+                    data: moment().format('DD/MM/YYYY')
                 }
             }
             var config = {
