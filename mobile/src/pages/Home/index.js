@@ -376,7 +376,7 @@ function Home() {
                             <Card>
                                 {sumLaunchExpense < economiaDespesa || sumLaunchExpense <= 0 ? '' :
                                     <Text style={{ textAlign: 'center', marginBottom: 20, marginTop: 10, fontSize: 15 }}>
-                                        {sumLaunchExpense < economiaDespesa ? '' :
+                                       {((sumLaunchRevenue - sumLaunchExpense) * 100 / sumLaunchRevenue).toFixed(2) === 'NaN' || ((sumLaunchRevenue - sumLaunchExpense) * 100 / sumLaunchRevenue).toFixed(2) === '-Infinity' || ((sumLaunchRevenue - sumLaunchExpense) * 100 / sumLaunchRevenue).toFixed(2) >= 60.00  ? '' :
                                             `Atenção Total de despesa ja ultrapassou 60%  no valor da receita! pare de gastar!`
                                         }
                                     </Text>}
@@ -431,7 +431,7 @@ function Home() {
                                             <View>
                                                 <Text>% Economia</Text>
                                                 <Text style={{ fontSize: 23, marginBottom: 10, color: "#154c79" }}>
-                                                    {((sumLaunchRevenue - sumLaunchExpense) * 100 / sumLaunchRevenue).toFixed(2) === 'NaN' || ((sumLaunchRevenue - sumLaunchExpense) * 100 / sumLaunchRevenue).toFixed(2) === '-Infinity' ? (0.00).toFixed(2) : ((sumLaunchRevenue - sumLaunchExpense) * 100 / sumLaunchRevenue).toFixed(2)}
+                                                    {((sumLaunchRevenue - sumLaunchExpense) * 100 / sumLaunchRevenue).toFixed(2) === 'NaN' || ((sumLaunchRevenue - sumLaunchExpense) * 100 / sumLaunchRevenue).toFixed(2) === '-Infinity' ? (0.00).toFixed(2) : ((sumLaunchRevenue - sumLaunchExpense) * 100 / sumLaunchRevenue).toFixed(2)}%
                                                 </Text>
                                             </View>
                                         </View>

@@ -27,7 +27,7 @@ class UploadController {
 
     async ImageIndex(req, res) {
         try {
-            const data = await knex('moments').select('*');
+            const data = await knex('moments').select('*').orderBy('moments.id', 'desc');
             res.status(200).json(data);
         } catch (error) {
             console.log(error);
@@ -38,17 +38,17 @@ class UploadController {
         var filename = req.body.filename;
         var id = req.body.id;
         try {
-            await knex('moments').where({ id: id }).del();       
+            await knex('moments').where({ id: id }).del();
 
             var filePath = `./public/upload/${filename}`;
 
             fs.unlink(filePath, (error) => {
                 if (!error) {
-                  console.log(false);
+                    console.log(false);
                 } else {
-                  console.log('Erro ao deletar arquivo.');
+                    console.log('Erro ao deletar arquivo.');
                 }
-              });             
+            });
 
             res.status(200).json({ 'ok': 'ok' })
         } catch (error) {
@@ -56,7 +56,7 @@ class UploadController {
         }
     }
 
-        
+
 
 }
 module.exports = UploadController;
