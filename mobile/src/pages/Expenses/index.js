@@ -70,7 +70,7 @@ function Expenses() {
     useEffect(() => {
         if (online == false) {
             Carregar();
-        } 
+        }
         loadExpense();
     }, [load, navigation]);
 
@@ -119,7 +119,7 @@ function Expenses() {
     } else {
         return (
 
-            <Provider >
+            <>
                 <SafeAreaView>
                     <ScrollView showsVerticalScrollIndicator={false} >
                         <Card>
@@ -149,7 +149,7 @@ function Expenses() {
 
                     </ScrollView>
                 </SafeAreaView>
-                <Portal>
+                <>
                     <FAB.Group
                         open={open}
                         visible
@@ -168,8 +168,8 @@ function Expenses() {
                             }
                         }}
                     />
-                </Portal>
-            </Provider>
+                </>
+            </>
 
         );
     }

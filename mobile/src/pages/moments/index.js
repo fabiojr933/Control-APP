@@ -128,7 +128,7 @@ function Momentos() {
         )
     } else {
         return (
-            <Provider >
+            <>
                 <SafeAreaView>
                     <ScrollView showsVerticalScrollIndicator={false} >
                         <View style={styles.container}>
@@ -176,7 +176,7 @@ function Momentos() {
                     />
                 </Portal>
 
-            </Provider >
+            </>
         );
 
     }

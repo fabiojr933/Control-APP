@@ -162,7 +162,7 @@ function NewMoment() {
         )
     } else {
         return (
-            <Provider >
+            <>
                 <SafeAreaView>
                     <ScrollView showsVerticalScrollIndicator={false} >
                         <View style={styles.container}>
@@ -206,7 +206,7 @@ function NewMoment() {
                     </ScrollView>
                 </SafeAreaView>
 
-            </Provider >
+            </>
         );
 
     }

@@ -388,7 +388,7 @@ function Flavia() {
         )
     } else {
         return (
-            <Provider >
+            <>
                 <SafeAreaView>
                     <ScrollView showsVerticalScrollIndicator={false} >
                         <View style={styles.container}>
@@ -624,7 +624,7 @@ function Flavia() {
                     </ScrollView>
                 </SafeAreaView>
 
-            </Provider>
+            </>
         );
 
     }

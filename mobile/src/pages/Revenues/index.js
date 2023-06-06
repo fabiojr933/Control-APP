@@ -122,7 +122,7 @@ function Revenues() {
     } else {
         return (
 
-            <Provider >
+            <>
                 <SafeAreaView>
                     <ScrollView showsVerticalScrollIndicator={false} >
                         <Card>
@@ -172,7 +172,7 @@ function Revenues() {
                         }}
                     />
                 </Portal>
-            </Provider>
+            </>
 
         );
     }

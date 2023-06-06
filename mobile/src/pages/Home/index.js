@@ -337,7 +337,7 @@ function Home() {
         )
     } else {
         return (
-            <Provider >
+            <>
                 <SafeAreaView>
                     <ScrollView showsVerticalScrollIndicator={false} >
                         <View style={styles.container}>
@@ -376,7 +376,7 @@ function Home() {
                             <Card>
                                 {sumLaunchExpense < economiaDespesa || sumLaunchExpense <= 0 ? '' :
                                     <Text style={{ textAlign: 'center', marginBottom: 20, marginTop: 10, fontSize: 15 }}>
-                                       {((sumLaunchRevenue - sumLaunchExpense) * 100 / sumLaunchRevenue).toFixed(2) === 'NaN' || ((sumLaunchRevenue - sumLaunchExpense) * 100 / sumLaunchRevenue).toFixed(2) === '-Infinity' || ((sumLaunchRevenue - sumLaunchExpense) * 100 / sumLaunchRevenue).toFixed(2) >= 60.00  ? '' :
+                                        {((sumLaunchRevenue - sumLaunchExpense) * 100 / sumLaunchRevenue).toFixed(2) === 'NaN' || ((sumLaunchRevenue - sumLaunchExpense) * 100 / sumLaunchRevenue).toFixed(2) === '-Infinity' || ((sumLaunchRevenue - sumLaunchExpense) * 100 / sumLaunchRevenue).toFixed(2) >= 60.00 ? '' :
                                             `Atenção Total de despesa ja ultrapassou 60%  no valor da receita! pare de gastar!`
                                         }
                                     </Text>}
@@ -423,7 +423,7 @@ function Home() {
                                             style={{ flexDirection: "row", flex: 1, justifyContent: "center" }}
                                         >
                                             <AwesomeIcon
-                                                name={((sumLaunchRevenue - sumLaunchExpense) * 100 / sumLaunchRevenue).toFixed(2) === 'NaN' || ((sumLaunchRevenue - sumLaunchExpense) * 100 / sumLaunchRevenue).toFixed(2) === '-Infinity' || ((sumLaunchRevenue - sumLaunchExpense) * 100 / sumLaunchRevenue).toFixed(2) <= 19.00 ? 'thumbs-o-down': 'thumbs-o-up'}
+                                                name={((sumLaunchRevenue - sumLaunchExpense) * 100 / sumLaunchRevenue).toFixed(2) === 'NaN' || ((sumLaunchRevenue - sumLaunchExpense) * 100 / sumLaunchRevenue).toFixed(2) === '-Infinity' || ((sumLaunchRevenue - sumLaunchExpense) * 100 / sumLaunchRevenue).toFixed(2) <= 19.00 ? 'thumbs-o-down' : 'thumbs-o-up'}
                                                 size={40}
                                                 color="#154c79"
                                                 style={{ marginRight: 5 }}
@@ -578,7 +578,7 @@ function Home() {
                         }}
                     />
                 </Portal>
-            </Provider>
+            </>
         );
 
     }

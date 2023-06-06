@@ -68,7 +68,7 @@ function Online() {
     } else {
         return (
 
-            <Provider >
+            <>
                 <SafeAreaView>
                     <ScrollView showsVerticalScrollIndicator={false} >
                         <View style={styles.container}>
@@ -91,7 +91,7 @@ function Online() {
                         </View>
                     </ScrollView>
                 </SafeAreaView>
-            </Provider>
+            </>
 
         );
     }
