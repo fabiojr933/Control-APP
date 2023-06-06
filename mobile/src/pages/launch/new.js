@@ -96,6 +96,7 @@ const LaunchNew = () => {
 
         //FIXED
         if (checked == true) {
+            var sequenFixo = 1;
             if (typeSelected == 'Entrada') {
                 var rodamFixo = Math.floor(Math.random() * 9999999999);
 
@@ -110,7 +111,8 @@ const LaunchNew = () => {
                     fixed: fixed,
                     parc: 'N',
                     fixedRodam: rodamFixo,
-                    data: moment().format('DD/MM/YYYY')
+                    data: moment().format('DD/MM/YYYY'),
+                    sequenFixo: sequenFixo
                 }
                 var configParData2 = {
                     method: 'POST',
@@ -121,7 +123,7 @@ const LaunchNew = () => {
                 await axios(configParData2);
 
                 //////////////////////////////////////////////////////////
-
+                sequenFixo = sequenFixo + 1;
                 for (let i = 1; i < 96; i++) {
                     var adicionarData = moment().add(31 * i, 'days');
                     if (moment(adicionarData).format('YYYY') <= 2030) {
@@ -136,7 +138,8 @@ const LaunchNew = () => {
                             fixed: fixed,
                             parc: 'N',
                             fixedRodam: rodamFixo,
-                            data: moment(adicionarData).format('DD/MM/YYYY')
+                            data: moment(adicionarData).format('DD/MM/YYYY'),
+                            sequenFixo: sequenFixo
                         }
                         var configData = {
                             method: 'POST',
@@ -144,7 +147,8 @@ const LaunchNew = () => {
                             data: data
                         };
                         console.log(data)
-                        await axios(configData);
+                        axios(configData);
+                        sequenFixo = sequenFixo + 1;
                     }
                 }
             } else {
@@ -160,7 +164,8 @@ const LaunchNew = () => {
                     fixed: fixed,
                     parc: 'N',
                     fixedRodam: rodamFixo,
-                    data: moment().format('DD/MM/YYYY')
+                    data: moment().format('DD/MM/YYYY'),
+                    sequenFixo: sequenFixo
                 }
                 var configParData2 = {
                     method: 'POST',
@@ -169,6 +174,7 @@ const LaunchNew = () => {
                 };
                 axios(configParData2);
                 ///////////////////////////////////
+                sequenFixo = sequenFixo + 1;
                 for (let i = 1; i < 96; i++) {
                     var adicionarData = moment().add(31 * i, 'days');
 
@@ -184,14 +190,16 @@ const LaunchNew = () => {
                             fixed: fixed,
                             parc: 'N',
                             fixedRodam: rodamFixo,
-                            data: moment(adicionarData).format('DD/MM/YYYY')
+                            data: moment(adicionarData).format('DD/MM/YYYY'),
+                            sequenFixo: sequenFixo
                         }
                         var configParData = {
                             method: 'POST',
                             url: api.url_base_api + url_api,
                             data: data
                         };
-                        await axios(configParData);
+                        axios(configParData);
+                        sequenFixo = sequenFixo + 1;
                     }
 
                 }

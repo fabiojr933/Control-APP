@@ -26,6 +26,7 @@ function Fabio() {
     const containerStyle = { backgroundColor: 'white', padding: 40, zIndex: 3 };
     const [idFixo, setIdFixo] = React.useState(0);
     const [fixedRodamId, setFixedRodamId] = React.useState(0);
+    const [sequenFixo, setSequenFixo] = React.useState(0);
 
 
     const [visibleRevenue, setVisibleRevenue] = React.useState(false);
@@ -37,7 +38,6 @@ function Fabio() {
 
 
 
-    const [lancData, setLancData] = React.useState('');
     const [tempo, setTempo] = React.useState(true);
     const navigation = React.useContext(NavigationContext);
     const [state, setState] = React.useState({ open: false });
@@ -253,12 +253,13 @@ function Fabio() {
         }
     }
 
-    async function removeLaunchExpenseApartirDesde(data) {
-
+    async function removeLaunchExpenseApartirDesde(fixedRodamId, sequenFixo) {
+        console.log('----------------')
+        console.log(fixedRodamId, sequenFixo)
         navigation.addListener('focus', () => setLoad(!load))
         var config = {
             method: 'DELETE',
-            url: api.url_base_api + `/removeLaunchExpenseApartirDesde/ '${data}' `,
+            url: api.url_base_api + '/removeLaunchExpenseApartirDesde/ ' + fixedRodamId + '/' + sequenFixo,
         };
         
         try {
@@ -277,12 +278,12 @@ function Fabio() {
         }
     }
 
-    async function removeLaunchRevenueApartirDesde(data) {
+    async function removeLaunchRevenueApartirDesde(fixedRodamIdRevenue, sequenFixo) {
 
         navigation.addListener('focus', () => setLoad(!load))
         var config = {
             method: 'DELETE',
-            url: api.url_base_api + '/removeLaunchRevenueApartirDesde/' + data,
+            url: api.url_base_api + '/removeLaunchRevenueApartirDesde/' + fixedRodamIdRevenue + '/' + sequenFixo,
         };
         try {
             const response = await axios(config);
@@ -390,11 +391,11 @@ function Fabio() {
 
 
 
-    async function removeLaunchExpense(id, fixed, fixedRodam, parc, ParcRodam, data) {
+    async function removeLaunchExpense(id, fixed, fixedRodam, parc, ParcRodam, sequenFixo) {
         console.log(id, fixed, fixedRodam, parc, ParcRodam)
         if (fixed == 'S') {
-            console.log(data)
-            setLancData(data)
+          
+           setSequenFixo(sequenFixo);
             setFixedRodamId(fixedRodam);
             setIdFixo(id);
             setVisible(true);
@@ -442,10 +443,10 @@ function Fabio() {
     }
 
 
-    async function removeLaunchRevenue(id, fixed, fixedRodam, parc, ParcRodam) {
+    async function removeLaunchRevenue(id, fixed, fixedRodam, parc, ParcRodam, sequenFixo) {
         console.log(id, fixed, fixedRodam)
         if (fixed == 'S') {
-            setLancData(data)
+           setSequenFixo(sequenFixo)
             setFixedRodamIdRevenue(fixedRodam);
             setIdFixoRevenue(id);
             setVisibleRevenue(true);
@@ -490,7 +491,7 @@ function Fabio() {
     }
 
 
-    async function confirmDeleteExpense(id, fixed, fixedRodam, parc, ParcRodam, data) {
+    async function confirmDeleteExpense(id, fixed, fixedRodam, parc, ParcRodam, sequenFixo) {
 
         Alert.alert(
             "Atenção!",
@@ -499,7 +500,7 @@ function Fabio() {
                 {
                     text: "Sim",
                     onPress: () => {
-                        removeLaunchExpense(id, fixed, fixedRodam, parc, ParcRodam, data);
+                        removeLaunchExpense(id, fixed, fixedRodam, parc, ParcRodam, sequenFixo);
                     },
                 },
                 {
@@ -509,7 +510,7 @@ function Fabio() {
         );
     }
 
-    async function confirmDeleteRevenue(id, fixed, fixedRodam, parc, ParcRodam, data) {
+    async function confirmDeleteRevenue(id, fixed, fixedRodam, parc, ParcRodam, sequenFixo) {
 
         console.log(id, fixed, fixedRodam, parc, ParcRodam)
 
@@ -520,7 +521,7 @@ function Fabio() {
                 {
                     text: "Sim",
                     onPress: () => {
-                        removeLaunchRevenue(id, fixed, fixedRodam, parc, ParcRodam, data);
+                        removeLaunchRevenue(id, fixed, fixedRodam, parc, ParcRodam, sequenFixo);
                     },
                 },
                 {
@@ -637,7 +638,7 @@ function Fabio() {
                                                         <>
                                                             <DataTable.Row>
                                                                 <DataTable.Cell >{item.description}   R$: {item.value} </DataTable.Cell>
-                                                                <Button mode="Text" onPress={() => confirmDeleteExpense(item.id, item.fixed, item.fixedRodam, item.parc, item.ParcRodam,item.data)}>x</Button>
+                                                                <Button mode="Text" onPress={() => confirmDeleteExpense(item.id, item.fixed, item.fixedRodam, item.parc, item.ParcRodam,item.sequenFixo)}>x</Button>
                                                             </DataTable.Row>
                                                             <Text>  </Text>
                                                         </>
@@ -656,7 +657,7 @@ function Fabio() {
                                                         <>
                                                             <DataTable.Row>
                                                                 <DataTable.Cell >{item.description}   R$: {item.value} </DataTable.Cell>
-                                                                <Button mode="Text" onPress={() => confirmDeleteRevenue(item.id, item.fixed, item.fixedRodam, item.parc, item.ParcRodam, item.data)}>x</Button>
+                                                                <Button mode="Text" onPress={() => confirmDeleteRevenue(item.id, item.fixed, item.fixedRodam, item.parc, item.ParcRodam, item.sequenFixo)}>x</Button>
                                                             </DataTable.Row>
                                                             <Text>  </Text>
 
@@ -681,7 +682,7 @@ function Fabio() {
                             <Modal visible={visible} onDismiss={hideModal} contentContainerStyle={containerStyle}>
                                 <Text>Atenção!, Esse é um lançamento fixo Deseja excluir? </Text>
                                 <Button onPress={() => removeExpenseSomenteEsse(idFixo)}>Somente esse</Button>
-                                <Button onPress={() => removeLaunchExpenseApartirDesde(lancData)} >A partir deste</Button>
+                                <Button onPress={() => removeLaunchExpenseApartirDesde(fixedRodamId, sequenFixo)} >A partir deste</Button>
                                 <Button onPress={() => removeExpenseSomenteTodos(fixedRodamId)}>Todos</Button>
                                 <Button onPress={hideModal} >Sair</Button>
                             </Modal>
@@ -693,7 +694,7 @@ function Fabio() {
                             <Modal visible={visibleRevenue} onDismiss={hideModalRevenue} contentContainerStyle={containerStyleRevenue}>
                                 <Text>Atenção!, Esse é um lançamento fixo Deseja excluir? </Text>
                                 <Button onPress={() => removeLaunchRevenueEsse(idFixoRevenue)}>Somente esse</Button>
-                                <Button onPress={() => removeLaunchRevenueApartirDesde(lancData)} >A partir deste</Button>
+                                <Button onPress={() => removeLaunchRevenueApartirDesde(fixedRodamIdRevenue, sequenFixo)} >A partir deste</Button>
                                 <Button onPress={() => removeLaunchRevenueTodos(fixedRodamIdRevenue)}>Todos</Button>
                                 <Button onPress={hideModalRevenue} >Sair</Button>
                             </Modal>

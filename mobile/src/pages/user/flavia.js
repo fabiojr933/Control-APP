@@ -26,6 +26,7 @@ function Flavia() {
     const containerStyle = { backgroundColor: 'white', padding: 40, zIndex: 3 };
     const [idFixo, setIdFixo] = React.useState(0);
     const [fixedRodamId, setFixedRodamId] = React.useState(0);
+    const [sequenFixo, setSequenFixo] = React.useState(0);
 
 
     const [visibleRevenue, setVisibleRevenue] = React.useState(false);
@@ -34,7 +35,6 @@ function Flavia() {
     const containerStyleRevenue = { backgroundColor: 'white', padding: 40, zIndex: 3 };
     const [idFixoRevenue, setIdFixoRevenue] = React.useState(0);
     const [fixedRodamIdRevenue, setFixedRodamIdRevenue] = React.useState(0);
-
 
 
 
@@ -253,13 +253,15 @@ function Flavia() {
         }
     }
 
-    async function removeLaunchExpenseApartirDesde(fixedRodam) {
-
+    async function removeLaunchExpenseApartirDesde(fixedRodamId, sequenFixo) {
+        console.log('----------------')
+        console.log(fixedRodamId, sequenFixo)
         navigation.addListener('focus', () => setLoad(!load))
         var config = {
             method: 'DELETE',
-            url: api.url_base_api + '/removeLaunchExpenseApartirDesde/' + fixedRodam + '/' + anoValue,
+            url: api.url_base_api + '/removeLaunchExpenseApartirDesde/ ' + fixedRodamId + '/' + sequenFixo,
         };
+        
         try {
             const response = await axios(config);
             if (response.status == 200) {
@@ -276,12 +278,12 @@ function Flavia() {
         }
     }
 
-    async function removeLaunchRevenueApartirDesde(fixedRodam) {
+    async function removeLaunchRevenueApartirDesde(fixedRodamIdRevenue, sequenFixo) {
 
         navigation.addListener('focus', () => setLoad(!load))
         var config = {
             method: 'DELETE',
-            url: api.url_base_api + '/removeLaunchRevenueApartirDesde/' + fixedRodam + '/' + anoValue,
+            url: api.url_base_api + '/removeLaunchRevenueApartirDesde/' + fixedRodamIdRevenue + '/' + sequenFixo,
         };
         try {
             const response = await axios(config);
@@ -389,9 +391,11 @@ function Flavia() {
 
 
 
-    async function removeLaunchExpense(id, fixed, fixedRodam, parc, ParcRodam) {
+    async function removeLaunchExpense(id, fixed, fixedRodam, parc, ParcRodam, sequenFixo) {
         console.log(id, fixed, fixedRodam, parc, ParcRodam)
         if (fixed == 'S') {
+          
+           setSequenFixo(sequenFixo);
             setFixedRodamId(fixedRodam);
             setIdFixo(id);
             setVisible(true);
@@ -439,9 +443,10 @@ function Flavia() {
     }
 
 
-    async function removeLaunchRevenue(id, fixed, fixedRodam, parc, ParcRodam) {
+    async function removeLaunchRevenue(id, fixed, fixedRodam, parc, ParcRodam, sequenFixo) {
         console.log(id, fixed, fixedRodam)
         if (fixed == 'S') {
+           setSequenFixo(sequenFixo)
             setFixedRodamIdRevenue(fixedRodam);
             setIdFixoRevenue(id);
             setVisibleRevenue(true);
@@ -486,7 +491,7 @@ function Flavia() {
     }
 
 
-    async function confirmDeleteExpense(id, fixed, fixedRodam, parc, ParcRodam) {
+    async function confirmDeleteExpense(id, fixed, fixedRodam, parc, ParcRodam, sequenFixo) {
 
         Alert.alert(
             "Atenção!",
@@ -495,7 +500,7 @@ function Flavia() {
                 {
                     text: "Sim",
                     onPress: () => {
-                        removeLaunchExpense(id, fixed, fixedRodam, parc, ParcRodam);
+                        removeLaunchExpense(id, fixed, fixedRodam, parc, ParcRodam, sequenFixo);
                     },
                 },
                 {
@@ -505,7 +510,7 @@ function Flavia() {
         );
     }
 
-    async function confirmDeleteRevenue(id, fixed, fixedRodam, parc, ParcRodam) {
+    async function confirmDeleteRevenue(id, fixed, fixedRodam, parc, ParcRodam, sequenFixo) {
 
         console.log(id, fixed, fixedRodam, parc, ParcRodam)
 
@@ -516,7 +521,7 @@ function Flavia() {
                 {
                     text: "Sim",
                     onPress: () => {
-                        removeLaunchRevenue(id, fixed, fixedRodam, parc, ParcRodam);
+                        removeLaunchRevenue(id, fixed, fixedRodam, parc, ParcRodam, sequenFixo);
                     },
                 },
                 {
@@ -633,7 +638,7 @@ function Flavia() {
                                                         <>
                                                             <DataTable.Row>
                                                                 <DataTable.Cell >{item.description}   R$: {item.value} </DataTable.Cell>
-                                                                <Button mode="Text" onPress={() => confirmDeleteExpense(item.id, item.fixed, item.fixedRodam, item.parc, item.ParcRodam)}>x</Button>
+                                                                <Button mode="Text" onPress={() => confirmDeleteExpense(item.id, item.fixed, item.fixedRodam, item.parc, item.ParcRodam,item.sequenFixo)}>x</Button>
                                                             </DataTable.Row>
                                                             <Text>  </Text>
                                                         </>
@@ -652,7 +657,7 @@ function Flavia() {
                                                         <>
                                                             <DataTable.Row>
                                                                 <DataTable.Cell >{item.description}   R$: {item.value} </DataTable.Cell>
-                                                                <Button mode="Text" onPress={() => confirmDeleteRevenue(item.id, item.fixed, item.fixedRodam, item.parc, item.ParcRodam)}>x</Button>
+                                                                <Button mode="Text" onPress={() => confirmDeleteRevenue(item.id, item.fixed, item.fixedRodam, item.parc, item.ParcRodam, item.sequenFixo)}>x</Button>
                                                             </DataTable.Row>
                                                             <Text>  </Text>
 
@@ -677,7 +682,7 @@ function Flavia() {
                             <Modal visible={visible} onDismiss={hideModal} contentContainerStyle={containerStyle}>
                                 <Text>Atenção!, Esse é um lançamento fixo Deseja excluir? </Text>
                                 <Button onPress={() => removeExpenseSomenteEsse(idFixo)}>Somente esse</Button>
-                                <Button onPress={() => removeLaunchExpenseApartirDesde(fixedRodamId)} >A partir deste</Button>
+                                <Button onPress={() => removeLaunchExpenseApartirDesde(fixedRodamId, sequenFixo)} >A partir deste</Button>
                                 <Button onPress={() => removeExpenseSomenteTodos(fixedRodamId)}>Todos</Button>
                                 <Button onPress={hideModal} >Sair</Button>
                             </Modal>
@@ -689,7 +694,7 @@ function Flavia() {
                             <Modal visible={visibleRevenue} onDismiss={hideModalRevenue} contentContainerStyle={containerStyleRevenue}>
                                 <Text>Atenção!, Esse é um lançamento fixo Deseja excluir? </Text>
                                 <Button onPress={() => removeLaunchRevenueEsse(idFixoRevenue)}>Somente esse</Button>
-                                <Button onPress={() => removeLaunchRevenueApartirDesde(fixedRodamIdRevenue)} >A partir deste</Button>
+                                <Button onPress={() => removeLaunchRevenueApartirDesde(fixedRodamIdRevenue, sequenFixo)} >A partir deste</Button>
                                 <Button onPress={() => removeLaunchRevenueTodos(fixedRodamIdRevenue)}>Todos</Button>
                                 <Button onPress={hideModalRevenue} >Sair</Button>
                             </Modal>

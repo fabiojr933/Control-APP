@@ -19,7 +19,8 @@ class launchController {
                 fixedRodam: req.body.fixedRodam,
                 ParcRodam: req.body.ParcRodam,
                 parc: req.body.parc,
-                data: req.body.data
+                data: req.body.data,
+                sequenFixo: req.body.sequenFixo
             }
             await knex('launchExpense').insert(data);
             return res.status(201).json(data);
@@ -45,7 +46,8 @@ class launchController {
                 fixedRodam: req.body.fixedRodam,
                 ParcRodam: req.body.ParcRodam,
                 parc: req.body.parc,
-                data: req.body.data
+                data: req.body.data,
+                sequenFixo: req.body.sequenFixo
             }
             await knex('launchRevenue').insert(data);
             return res.status(201).json(data);
@@ -138,13 +140,15 @@ class launchController {
 
 
     async removeLaunchExpenseApartirDesde(req, res) {
-       
-        const data = req.params.data;
+
+        const fixedRodam = req.params.fixedRodam;
+        const sequenFixo = req.params.sequenFixo;
+        console.log(fixedRodam, sequenFixo)
         try {
-            if (!data) {
+            if (!fixedRodam) {
                 return res.status(400).json({ error: 'É preciso informar o lançamento' });
             }
-            await knex('launchExpense').whereRaw(`launchExpense.data >= ${data}`).del();
+            await knex('launchExpense').whereRaw(`launchExpense.fixedRodam >= ${fixedRodam} and launchExpense.sequenFixo >= ${sequenFixo} `).del();
             return res.status(200).json({ ok: 'ok' });
         } catch (error) {
             return res.status(400).json({ error: 'Ops aconteceu um erro! chama o Fabio' });
@@ -152,12 +156,13 @@ class launchController {
     }
 
     async removeLaunchRevenueApartirDesde(req, res) {
-        const data = req.params.data;
+        const fixedRodam = req.params.fixedRodam;
+        const sequenFixo = req.params.sequenFixo;
         try {
-            if (!data) {
+            if (!fixedRodam) {
                 return res.status(400).json({ error: 'É preciso informar o lançamento' });
             }
-            await knex('launchRevenue').whereRaw(`launchRevenue.data >= ${data}`).del();
+            await knex('launchRevenue').whereRaw(`launchRevenue.fixedRodam >= ${fixedRodam} and launchRevenue.sequenFixo >= ${sequenFixo}`).del();
             return res.status(200).json({ ok: 'ok' });
         } catch (error) {
             console.log(error)
@@ -170,7 +175,7 @@ class launchController {
             let month = req.params.month;
             let year = req.params.year;
             let dados = await knex.raw('select launchRevenue.*, revenue.description from revenue join launchRevenue on revenue.id = launchRevenue.id_revenue WHERE launchRevenue.month = ' + month + ' AND launchRevenue.year = ' + year);
-           console.log(dados)
+            console.log(dados)
             return res.status(200).json(dados);
         } catch (error) {
             console.log(error)
@@ -233,7 +238,7 @@ class launchController {
             let month = req.params.month;
             let year = req.params.year;
             let user = req.params.user;
-            let dados = await knex.raw(`select launchExpense.id, launchExpense.fixed, launchExpense.fixedRodam, launchExpense.data, launchExpense.parc, launchExpense.ParcRodam, expense.description, launchExpense.value from launchExpense 
+            let dados = await knex.raw(`select launchExpense.id, launchExpense.fixed, launchExpense.fixedRodam, launchExpense.sequenFixo, launchExpense.parc, launchExpense.ParcRodam, expense.description, launchExpense.value from launchExpense 
             join expense on expense.id = launchExpense.id_expense
             where launchExpense.month = ${month} and launchExpense.year = ${year}  and launchExpense.user = "${user}"`);
             return res.status(200).json(dados);
@@ -248,7 +253,7 @@ class launchController {
             let month = req.params.month;
             let year = req.params.year;
             let user = req.params.user;
-            let dados = await knex.raw(`select launchRevenue.id, launchRevenue.fixed, launchRevenue.fixedRodam, launchRevenue.data, launchRevenue.parc, launchRevenue.ParcRodam, revenue.description, launchRevenue.value from launchRevenue 
+            let dados = await knex.raw(`select launchRevenue.id, launchRevenue.fixed, launchRevenue.fixedRodam, launchRevenue.sequenFixo, launchRevenue.parc, launchRevenue.ParcRodam, revenue.description, launchRevenue.value from launchRevenue 
             join revenue on revenue.id = launchRevenue.id_revenue
             where launchRevenue.month = ${month} and launchRevenue.year = ${year}  and launchRevenue.user = "${user}"`);
             return res.status(200).json(dados);

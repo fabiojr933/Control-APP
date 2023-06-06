@@ -237,12 +237,25 @@ function Home() {
         try {
             const response = await axios(config);
             if (response.status == 200) {
+
+
+                var totalEconomia = (response.data[0].value * 0.20).toFixed(2);
+                var totalReceita = (response.data[0].value - totalEconomia).toFixed(2);
+                var economiaDespesa = (response.data[0].value * 0.60).toFixed(2);
+                setEconomiaDespesa(economiaDespesa);
+                setTotalEconomia(totalEconomia);
+                setSumLaunchRevenue(response.data[0].value.toFixed(2));
+
+                console.log('////////////')
+                console.log(((sumLaunchRevenue - sumLaunchExpense) * 100 / sumLaunchRevenue).toFixed(2))
+                /*
                 var totalEconomia = (response.data[0].value * 0.20).toFixed(2);
                 var totalReceita = (response.data[0].value - totalEconomia).toFixed(2);
                 var economiaDespesa = (response.data[0].value * 0.60).toFixed(2);
                 setEconomiaDespesa(economiaDespesa);
                 setTotalEconomia(totalEconomia);
                 setSumLaunchRevenue(totalReceita);
+                */
             }
         } catch (error) {
             // alert('Ops! ocorreu algum erro');
@@ -274,7 +287,7 @@ function Home() {
         };
         try {
             const response = await axios(config);
-            if (response.status == 200) {              
+            if (response.status == 200) {
                 setRevenueAll(response.data);
             }
         } catch (error) {
@@ -410,7 +423,7 @@ function Home() {
                                             style={{ flexDirection: "row", flex: 1, justifyContent: "center" }}
                                         >
                                             <AwesomeIcon
-                                                name="plus"
+                                                name={((sumLaunchRevenue - sumLaunchExpense) * 100 / sumLaunchRevenue).toFixed(2) === 'NaN' || ((sumLaunchRevenue - sumLaunchExpense) * 100 / sumLaunchRevenue).toFixed(2) === '-Infinity' || ((sumLaunchRevenue - sumLaunchExpense) * 100 / sumLaunchRevenue).toFixed(2) <= 19.00 ? 'thumbs-o-down': 'thumbs-o-up'}
                                                 size={40}
                                                 color="#154c79"
                                                 style={{ marginRight: 5 }}
@@ -418,7 +431,7 @@ function Home() {
                                             <View>
                                                 <Text>% Economia</Text>
                                                 <Text style={{ fontSize: 23, marginBottom: 10, color: "#154c79" }}>
-                                                    20%
+                                                    {((sumLaunchRevenue - sumLaunchExpense) * 100 / sumLaunchRevenue).toFixed(2) === 'NaN' || ((sumLaunchRevenue - sumLaunchExpense) * 100 / sumLaunchRevenue).toFixed(2) === '-Infinity' ? (0.00).toFixed(2) : ((sumLaunchRevenue - sumLaunchExpense) * 100 / sumLaunchRevenue).toFixed(2)}
                                                 </Text>
                                             </View>
                                         </View>
@@ -426,7 +439,7 @@ function Home() {
                                             style={{ flexDirection: "row", flex: 1, justifyContent: "center" }}
                                         >
                                             <AwesomeIcon
-                                                name="minus"
+                                                name="money"
                                                 size={40}
                                                 color="#154c79"
                                                 style={{ marginRight: 5 }}
@@ -434,7 +447,7 @@ function Home() {
                                             <View>
                                                 <Text>Total Economia</Text>
                                                 <Text style={{ fontSize: 23, marginBottom: 10, color: "#154c79" }}>
-                                                    {totalEconomia}
+                                                    {(sumLaunchRevenue - sumLaunchExpense).toFixed(2)}
                                                 </Text>
                                             </View>
                                         </View>
@@ -489,8 +502,8 @@ function Home() {
 
                             <Text> </Text>
                             <Text> </Text>
-                            
-                            
+
+
                             {graficDadosExpenseRevenue[0].value <= 0.00 && graficDadosExpenseRevenue[1].value <= 0 ? '' :
                                 <View >
                                     <Text style={{ fontSize: 20, textAlign: 'center' }}>
