@@ -2,12 +2,8 @@
 import * as React from 'react';
 import { Alert, ScrollView } from 'react-native';
 import { View, StyleSheet } from 'react-native';
-import { Text, Portal, Provider, Card, List, Button, ActivityIndicator, MD2Colors, DataTable, Modal, PaperProvider } from 'react-native-paper';
+import { Text, Card, List, Button, ActivityIndicator, MD2Colors, DataTable, Modal } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import CardValues from '../../components/cardValues';
-import CardNews from '../../components/cardNews';
-import CardLanc from '../../components/cardLanc';
-import CardGraficos from '../../components/cardGraficos';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { NavigationContext } from '@react-navigation/native';
 import moment from 'moment';
@@ -162,13 +158,11 @@ function Flavia() {
             url: api.url_base_api + '/allLaunchExpenseUser/' + mesValue + '/' + anoValue + '/' + 'Flavia',
         };
         try {
-            const response = await axios(config);
-            console.log(response)
+            const response = await axios(config);       
             if (response.status == 200) {
                 setExpenseAll(response.data);
             }
-        } catch (error) {
-            console.log(error)
+        } catch (error) {        
             // alert('Ops! ocorreu algum erro');
         }
     }
@@ -181,8 +175,7 @@ function Flavia() {
         };
         try {
             const response = await axios(config);
-            if (response.status == 200) {
-                console.log(response.data)
+            if (response.status == 200) {              
                 setRevenueAll(response.data);
             }
         } catch (error) {
@@ -230,8 +223,7 @@ function Flavia() {
         }
     }
 
-    async function removeExpenseSomenteTodos(fixedRodam) {
-        console.log(fixedRodam)
+    async function removeExpenseSomenteTodos(fixedRodam) {    
         navigation.addListener('focus', () => setLoad(!load))
         var config = {
             method: 'DELETE',
@@ -247,15 +239,12 @@ function Flavia() {
                 setVisible(false)
                 navigation.navigate('Flavia');
             }
-        } catch (error) {
-            console.log(error)
+        } catch (error) {        
             //  alert('Ops! ocorreu algum erro');
         }
     }
 
-    async function removeLaunchExpenseApartirDesde(fixedRodamId, sequenFixo) {
-        console.log('----------------')
-        console.log(fixedRodamId, sequenFixo)
+    async function removeLaunchExpenseApartirDesde(fixedRodamId, sequenFixo) {      
         navigation.addListener('focus', () => setLoad(!load))
         var config = {
             method: 'DELETE',
@@ -272,8 +261,7 @@ function Flavia() {
                 setVisible(false)
                 navigation.navigate('Flavia');
             }
-        } catch (error) {
-            console.log(error)
+        } catch (error) {           
             // alert('Ops! ocorreu algum erro');
         }
     }
@@ -296,13 +284,12 @@ function Flavia() {
                 navigation.navigate('Flavia');
             }
         } catch (error) {
-            console.log(error)
+           
             //  alert('Ops! ocorreu algum erro');
         }
     }
 
-    async function removeLaunchRevenueTodos(fixedRodam) {
-        console.log(fixedRodam)
+    async function removeLaunchRevenueTodos(fixedRodam) {      
         navigation.addListener('focus', () => setLoad(!load))
         var config = {
             method: 'DELETE',
@@ -318,8 +305,7 @@ function Flavia() {
                 setVisibleRevenue(false)
                 navigation.navigate('Flavia');
             }
-        } catch (error) {
-            console.log(error)
+        } catch (error) {          
             // alert('Ops! ocorreu algum erro');
         }
     }
@@ -361,8 +347,7 @@ function Flavia() {
                 SumLaunchRevenue();
                 navigation.navigate('Flavia');
             }
-        } catch (error) {
-            console.log(error)
+        } catch (error) {        
             // alert('Ops! ocorreu algum erro');
         }
     }
@@ -383,16 +368,14 @@ function Flavia() {
                 SumLaunchRevenue();
                 navigation.navigate('Flavia');
             }
-        } catch (error) {
-            console.log(error)
+        } catch (error) {      
             // alert('Ops! ocorreu algum erro');
         }
     }
 
 
 
-    async function removeLaunchExpense(id, fixed, fixedRodam, parc, ParcRodam, sequenFixo) {
-        console.log(id, fixed, fixedRodam, parc, ParcRodam)
+    async function removeLaunchExpense(id, fixed, fixedRodam, parc, ParcRodam, sequenFixo) {    
         if (fixed == 'S') {
           
            setSequenFixo(sequenFixo);
@@ -443,8 +426,7 @@ function Flavia() {
     }
 
 
-    async function removeLaunchRevenue(id, fixed, fixedRodam, parc, ParcRodam, sequenFixo) {
-        console.log(id, fixed, fixedRodam)
+    async function removeLaunchRevenue(id, fixed, fixedRodam, parc, ParcRodam, sequenFixo) { 
         if (fixed == 'S') {
            setSequenFixo(sequenFixo)
             setFixedRodamIdRevenue(fixedRodam);
@@ -511,8 +493,6 @@ function Flavia() {
     }
 
     async function confirmDeleteRevenue(id, fixed, fixedRodam, parc, ParcRodam, sequenFixo) {
-
-        console.log(id, fixed, fixedRodam, parc, ParcRodam)
 
         Alert.alert(
             "Atenção!",

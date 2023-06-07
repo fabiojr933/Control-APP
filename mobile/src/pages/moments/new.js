@@ -1,8 +1,9 @@
 
 import * as React from 'react';
 import { Image, ScrollView } from 'react-native';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
-import { Text, Avatar, Provider, Card, TextInput, ActivityIndicator, MD2Colors, Button } from 'react-native-paper'; import { SafeAreaView } from 'react-native-safe-area-context';
+import { View, StyleSheet } from 'react-native';
+import { Text, Avatar, Provider, Card, TextInput, ActivityIndicator, MD2Colors, Button } from 'react-native-paper'; 
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { NavigationContext } from '@react-navigation/native';
 import { DatePickerInput, registerTranslation } from 'react-native-paper-dates';
 import moment from 'moment';
@@ -28,7 +29,6 @@ registerTranslation('pt-br', {
     pickDateFromCalendar: 'Escolher data no calendário',
     close: 'Sair',
 })
-import * as ImagePicker from 'expo-image-picker';
 
 function NewMoment() {
 
@@ -101,9 +101,7 @@ function NewMoment() {
 
 
     const pickDocument = async () => {
-        let result = await DocumentPicker.getDocumentAsync({});
-        console.log(result.uri);
-        console.log(result);
+        let result = await DocumentPicker.getDocumentAsync({});      
         setImage(result.uri)
         setMimeType(result.mimeType)
         setName(result.name)

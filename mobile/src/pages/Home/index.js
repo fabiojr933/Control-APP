@@ -4,84 +4,18 @@ import { ScrollView } from 'react-native';
 import { View, StyleSheet } from 'react-native';
 import { Text, FAB, Portal, Provider, Card, List, Button, ActivityIndicator, MD2Colors, } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import CardValues from '../../components/cardValues';
 import CardNews from '../../components/cardNews';
-import CardLanc from '../../components/cardLanc';
-import CardGraficos from '../../components/cardGraficos';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { NavigationContext } from '@react-navigation/native';
 import moment from 'moment';
 import axios from 'axios';
 import api from '../../service/api';
 import AwesomeIcon from 'react-native-vector-icons/FontAwesome';
-import { VictoryPie } from "victory-native";
 import { PieChart } from "react-native-svg-charts";
 
 function Home() {
 
-
-
-    const randomColor = () =>
-        ("#" + ((Math.random() * 0xffffff) << 0).toString(16) + "000000").slice(
-            0,
-            7
-        );
-
-    const data = [
-        {
-            id: 0,
-            value: 720,
-            description: "Alimentação",
-            color: randomColor(),
-        },
-        {
-            id: 1,
-            value: 310,
-            description: "Carro",
-            color: randomColor(),
-        },
-        {
-            id: 2,
-            value: 250,
-            description: "Investimento",
-            color: randomColor(),
-        },
-        {
-            id: 3,
-            value: 321,
-            description: "Outros",
-            color: randomColor(),
-        },
-        {
-            id: 4,
-            value: 121,
-            description: "Bebidas",
-            color: randomColor(),
-        },
-    ];
-
-
-
-
-    //console.log(data)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    const [tempo, setTempo] = React.useState(true);
+   const [tempo, setTempo] = React.useState(true);
     const navigation = React.useContext(NavigationContext);
     const [state, setState] = React.useState({ open: false });
     const onStateChange = ({ open }) => setState({ open });
@@ -152,7 +86,6 @@ function Home() {
                 dados.push({ id: 1, 'description': 'Sem dados', value: 0.00, 'color': 'red' });
             }
             setGraficDadosExpenseRevenue(dados);
-            console.log(graficDadosExpenseRevenue)
         } catch (error) {
             dados.push({ id: 1, 'description': 'Sem dados', value: 0.00, 'color': 'red' });
             setGraficDadosExpenseRevenue(dados);
@@ -238,24 +171,13 @@ function Home() {
             const response = await axios(config);
             if (response.status == 200) {
 
-
                 var totalEconomia = (response.data[0].value * 0.20).toFixed(2);
                 var totalReceita = (response.data[0].value - totalEconomia).toFixed(2);
                 var economiaDespesa = (response.data[0].value * 0.60).toFixed(2);
                 setEconomiaDespesa(economiaDespesa);
                 setTotalEconomia(totalEconomia);
-                setSumLaunchRevenue(response.data[0].value.toFixed(2));
-
-                console.log('////////////')
-                console.log(((sumLaunchRevenue - sumLaunchExpense) * 100 / sumLaunchRevenue).toFixed(2))
-                /*
-                var totalEconomia = (response.data[0].value * 0.20).toFixed(2);
-                var totalReceita = (response.data[0].value - totalEconomia).toFixed(2);
-                var economiaDespesa = (response.data[0].value * 0.60).toFixed(2);
-                setEconomiaDespesa(economiaDespesa);
-                setTotalEconomia(totalEconomia);
-                setSumLaunchRevenue(totalReceita);
-                */
+                setSumLaunchRevenue(response.data[0].value.toFixed(2));             
+              
             }
         } catch (error) {
             // alert('Ops! ocorreu algum erro');

@@ -143,7 +143,7 @@ class launchController {
 
         const fixedRodam = req.params.fixedRodam;
         const sequenFixo = req.params.sequenFixo;
-        console.log(fixedRodam, sequenFixo)
+  
         try {
             if (!fixedRodam) {
                 return res.status(400).json({ error: 'É preciso informar o lançamento' });
@@ -164,8 +164,7 @@ class launchController {
             }
             await knex('launchRevenue').whereRaw(`launchRevenue.fixedRodam >= ${fixedRodam} and launchRevenue.sequenFixo >= ${sequenFixo}`).del();
             return res.status(200).json({ ok: 'ok' });
-        } catch (error) {
-            console.log(error)
+        } catch (error) {         
             return res.status(400).json({ error: 'Ops aconteceu um erro! chama o Fabio' });
         }
     }
@@ -175,10 +174,9 @@ class launchController {
             let month = req.params.month;
             let year = req.params.year;
             let dados = await knex.raw('select launchRevenue.*, revenue.description from revenue join launchRevenue on revenue.id = launchRevenue.id_revenue WHERE launchRevenue.month = ' + month + ' AND launchRevenue.year = ' + year);
-            console.log(dados)
+          
             return res.status(200).json(dados);
-        } catch (error) {
-            console.log(error)
+        } catch (error) {       
             return res.status(400).json({ error: 'Ops aconteceu um erro! chama o Fabio' });
         }
     }
@@ -189,8 +187,7 @@ class launchController {
             let year = req.params.year;
             let dados = await knex.raw('select launchExpense.*, expense.description from  expense join launchExpense on expense.id = launchExpense.id_expense WHERE launchExpense.month = ' + month + ' AND launchExpense.year = ' + year);
             return res.status(200).json(dados);
-        } catch (error) {
-            console.log(error)
+        } catch (error) {         
             return res.status(400).json({ error: 'Ops aconteceu um erro! chama o Fabio' });
         }
     }
@@ -209,8 +206,7 @@ class launchController {
             } else {
                 return res.status(200).json(dados);
             }
-        } catch (error) {
-            console.log(error)
+        } catch (error) {          
             return res.status(400).json({ error: 'Ops aconteceu um erro! chama o Fabio' });
         }
     }
@@ -227,8 +223,7 @@ class launchController {
             } else {
                 return res.status(200).json(dados);
             }
-        } catch (error) {
-            console.log(error)
+        } catch (error) {        
             return res.status(400).json({ error: 'Ops aconteceu um erro! chama o Fabio' });
         }
     }
@@ -242,8 +237,7 @@ class launchController {
             join expense on expense.id = launchExpense.id_expense
             where launchExpense.month = ${month} and launchExpense.year = ${year}  and launchExpense.user = "${user}"`);
             return res.status(200).json(dados);
-        } catch (error) {
-            console.log(error)
+        } catch (error) {       
             return res.status(400).json({ error: 'Ops aconteceu um erro! chama o Fabio' });
         }
     }
@@ -257,8 +251,7 @@ class launchController {
             join revenue on revenue.id = launchRevenue.id_revenue
             where launchRevenue.month = ${month} and launchRevenue.year = ${year}  and launchRevenue.user = "${user}"`);
             return res.status(200).json(dados);
-        } catch (error) {
-            console.log(error)
+        } catch (error) {        
             return res.status(400).json({ error: 'Ops aconteceu um erro! chama o Fabio' });
         }
     }
@@ -279,8 +272,7 @@ class launchController {
             } else {
                 return res.status(200).json(dados);
             }
-        } catch (error) {
-            console.log(error)
+        } catch (error) {          
             return res.status(400).json({ error: 'Ops aconteceu um erro! chama o Fabio' });
         }
     }
@@ -299,8 +291,7 @@ class launchController {
             } else {
                 return res.status(200).json(dados);
             }
-        } catch (error) {
-            console.log(error)
+        } catch (error) {        
             return res.status(400).json({ error: 'Ops aconteceu um erro! chama o Fabio' });
         }
     }

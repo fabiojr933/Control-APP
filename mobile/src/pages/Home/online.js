@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { ScrollView, Alert } from 'react-native';
 import { View, StyleSheet } from 'react-native';
-import { Card, ActivityIndicator, MD2Colors, Text, Button, DataTable, FAB, Portal, Provider } from 'react-native-paper';
+import { Card, ActivityIndicator, MD2Colors, Text, Button } from 'react-native-paper';
 
 import { SafeAreaView } from 'react-native-safe-area-context';
 import api from '../../service/api';

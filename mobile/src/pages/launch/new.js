@@ -31,23 +31,7 @@ registerTranslation('pt-br', {
 })
 
 const LaunchNew = () => {
-    const navigation = React.useContext(NavigationContext);
-
-    const [mesItems, mesSetItems] = React.useState([
-        { label: 'Janeiro', value: '01' },
-        { label: 'Fevereiro', value: '02' },
-        { label: 'Março', value: '03' },
-        { label: 'Abril', value: '04' },
-        { label: 'Maio', value: '05' },
-        { label: 'Junho', value: '06' },
-        { label: 'Julho', value: '07' },
-        { label: 'Agosto', value: '08' },
-        { label: 'Setembro', value: '09' },
-        { label: 'Outubro', value: '10' },
-        { label: 'Novembro', value: '11' },
-        { label: 'Desembro', value: '12' },
-
-    ]);
+    const navigation = React.useContext(NavigationContext);   
 
     const [inputDate, setInputDate] = React.useState(undefined)
     const [parc, setParc] = React.useState(false);
@@ -92,8 +76,6 @@ const LaunchNew = () => {
         var fixed = checked == false ? 'N' : 'S';
 
 
-
-
         //FIXED
         if (checked == true) {
             var sequenFixo = 1;
@@ -118,8 +100,7 @@ const LaunchNew = () => {
                     method: 'POST',
                     url: api.url_base_api + url_api,
                     data: data2
-                };
-                console.log(data)
+                };             
                 await axios(configParData2);
 
                 //////////////////////////////////////////////////////////
@@ -146,7 +127,6 @@ const LaunchNew = () => {
                             url: api.url_base_api + url_api,
                             data: data
                         };
-                        console.log(data)
                         axios(configData);
                         sequenFixo = sequenFixo + 1;
                     }
@@ -231,11 +211,7 @@ const LaunchNew = () => {
                     url: api.url_base_api + url_api,
                     data: data
                 };
-
-                console.log(configPar)
                 await axios(configPar);
-
-
                 for (let i = 1; i < qteParcela; i++) {
                     var adicionarData = moment(inputDate).add(31 * i, 'days');
                     data = {

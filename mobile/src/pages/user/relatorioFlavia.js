@@ -2,12 +2,8 @@
 import * as React from 'react';
 import { Alert, ScrollView } from 'react-native';
 import { View, StyleSheet } from 'react-native';
-import { Text, FAB, Portal, Provider, Card, List, Button, ActivityIndicator, MD2Colors, DataTable } from 'react-native-paper';
+import { Text, Card, ActivityIndicator, MD2Colors, DataTable } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import CardValues from '../../components/cardValues';
-import CardNews from '../../components/cardNews';
-import CardLanc from '../../components/cardLanc';
-import CardGraficos from '../../components/cardGraficos';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { NavigationContext } from '@react-navigation/native';
 import moment from 'moment';
@@ -18,55 +14,6 @@ import { VictoryBar, VictoryChart, VictoryTheme, VictoryPie, VictoryBoxPlot } fr
 import { PieChart } from "react-native-svg-charts";
 
 function Flavia() {
-
-
-
-
-
-
-    const randomColor = () =>
-        ("#" + ((Math.random() * 0xffffff) << 0).toString(16) + "000000").slice(
-            0,
-            7
-        );
-
-    const data = [
-        {
-            id: 0,
-            value: 720,
-            description: "Alimentação",
-            color: randomColor(),
-        },
-        {
-            id: 1,
-            value: 310,
-            description: "Carro",
-            color: randomColor(),
-        },
-        {
-            id: 2,
-            value: 250,
-            description: "Investimento",
-            color: randomColor(),
-        },
-        {
-            id: 3,
-            value: 321,
-            description: "Outros",
-            color: randomColor(),
-        },
-        {
-            id: 4,
-            value: 121,
-            description: "Bebidas",
-            color: randomColor(),
-        },
-    ];
-
-
-
-
-
 
     const [tempo, setTempo] = React.useState(true);
     const navigation = React.useContext(NavigationContext);

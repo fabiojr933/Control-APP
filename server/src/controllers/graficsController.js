@@ -30,7 +30,7 @@ class GraficsController {
             }
             let dados = await knex.raw(`select revenue.description, sum(launchRevenue.value) as valor from launchRevenue join revenue on launchRevenue.id_revenue = revenue.id
             where launchRevenue.month = ${req.params.mes} and launchRevenue.year = ${req.params.ano} and launchRevenue.user = '${req.params.usuario}' group by 1`);
-            console.log(dados[0])
+            
             if (dados[0] === [] || !dados[0] || dados[0] == null || dados[0] == undefined) {
                 lista.push({ 'description': 'Sem dados', 'valor': 0 });
                 return res.status(200).json(lista);

@@ -16,12 +16,11 @@ class UploadController {
             'year': (req.body.year),
             'description': req.body.description
         }
-        console.log(data)
+
         try {
             await knex('moments').insert(data);
             res.status(200).json(data);
         } catch (error) {
-            console.log(error);
         }
     }
 
@@ -30,7 +29,6 @@ class UploadController {
             const data = await knex('moments').select('*').orderBy('moments.id', 'desc');
             res.status(200).json(data);
         } catch (error) {
-            console.log(error);
         }
     }
 
@@ -52,11 +50,8 @@ class UploadController {
 
             res.status(200).json({ 'ok': 'ok' })
         } catch (error) {
-            console.log(error);
         }
     }
-
-
 
 }
 module.exports = UploadController;

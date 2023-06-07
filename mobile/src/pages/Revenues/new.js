@@ -1,10 +1,9 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { ScrollView } from 'react-native';
 import { View, StyleSheet } from 'react-native';
 import { Card, TextInput, Text, Button } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import database from '../../database/firebase';
 import { NavigationContext } from '@react-navigation/native';
 import api from '../../service/api';
 import axios from 'axios';

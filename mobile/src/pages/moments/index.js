@@ -2,7 +2,8 @@
 import * as React from 'react';
 import { ScrollView } from 'react-native';
 import { View, StyleSheet, Alert } from 'react-native';
-import { Text, Avatar, Provider, Card, Portal, FAB, ActivityIndicator, MD2Colors, Button } from 'react-native-paper'; import { SafeAreaView } from 'react-native-safe-area-context';
+import { Text, Avatar, Card, Portal, FAB, ActivityIndicator, MD2Colors, Button } from 'react-native-paper'; 
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { NavigationContext } from '@react-navigation/native';
 import axios from 'axios';
 import api from '../../service/api';
