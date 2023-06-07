@@ -81,7 +81,7 @@ function Online() {
                                     <Text></Text>
                                     <Text></Text>
                                 </Card.Content>
-                                <Card.Cover style={{ height: 350 }} source={{ uri: 'https://github-production-user-asset-6210df.s3.amazonaws.com/41793614/242353065-07bdbdda-bf05-4922-a8d1-5a9d2d823069.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIWNJYAX4CSVEH53A%2F20230531%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20230531T170806Z&X-Amz-Expires=300&X-Amz-Signature=9b20556575b8eddd164e1bfc96ccb47bd7ed9868705cf59618936132176cf604&X-Amz-SignedHeaders=host&actor_id=41793614&key_id=0&repo_id=647066252' }} />
+                                <Card.Cover style={{ height: 350 }} source={{ uri: 'https://private-user-images.githubusercontent.com/41793614/242353065-07bdbdda-bf05-4922-a8d1-5a9d2d823069.jpg?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXkiOiJrZXkxIiwiZXhwIjoxNjg2MTQ4MzA0LCJuYmYiOjE2ODYxNDgwMDQsInBhdGgiOiIvNDE3OTM2MTQvMjQyMzUzMDY1LTA3YmRiZGRhLWJmMDUtNDkyMi1hOGQxLTVhOWQyZDgyMzA2OS5qcGc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBSVdOSllBWDRDU1ZFSDUzQSUyRjIwMjMwNjA3JTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDIzMDYwN1QxNDI2NDRaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT04NzMwYjEyYzc0YWY2M2I4NTNkMWE1YzM4YjExMTU3OTRlZDA2Yjc2YjdiNDQwY2RlNjZkYTFjNmY4ZTU0NmM0JlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.mxKtXic5qzBymNhy3q2WgcSdJddd08envrwt9ny0JTs' }} />
                                 <Card.Actions>
                                     <Text></Text>
                                     <Text></Text>
