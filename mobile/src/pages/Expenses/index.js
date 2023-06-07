@@ -36,7 +36,7 @@ function Expenses() {
             }
             ContagemTempo();
         } catch (error) {
-            alert('Ops! ocorreu algum erro');
+          //  alert('Ops! ocorreu algum erro');
         }
     }
 
@@ -86,7 +86,7 @@ function Expenses() {
                 navigation.navigate('Cartao');
             }
         } catch (error) {
-            alert('Ops! ocorreu algum erro');
+         //   alert('Ops! ocorreu algum erro');
         }
     }
 

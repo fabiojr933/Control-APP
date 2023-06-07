@@ -35,7 +35,7 @@ function Revenues() {
             }
             ContagemTempo();
         } catch (error) {
-            alert('Ops! ocorreu algum erro');
+           // alert('Ops! ocorreu algum erro');
         }
     }
 
@@ -80,7 +80,7 @@ function Revenues() {
                 navigation.navigate('revenue');
             }
         } catch (error) {
-            alert('Ops! ocorreu algum erro');
+           // alert('Ops! ocorreu algum erro');
         }
     }
 
