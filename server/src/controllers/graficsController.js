@@ -1,7 +1,6 @@
 const knex = require('../config/connection');
 
 class GraficsController {
-
     async launchExpenseAnoMes(req, res) {
         var lista = [];
         try {

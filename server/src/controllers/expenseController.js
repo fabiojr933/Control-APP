@@ -12,7 +12,7 @@ class expenseController {
             await knex('expense').insert(data);
             return res.status(201).json(data);
         } catch (error) {
-            return res.status(400).json({ error: 'Ops aconteceu um erro! chama o Fabio' });
+            return res.status(400).json({ error: 'Ops aconteceu um erro!' });
         }
     }
 
@@ -21,7 +21,7 @@ class expenseController {
             const data = await knex('expense').select('*');
             return res.status(200).json(data);
         } catch (error) {
-            return res.status(400).json({ error: 'Ops aconteceu um erro! chama o Fabio' });
+            return res.status(400).json({ error: 'Ops aconteceu um erro!' });
         }
     }
     async remove(req, res) {
@@ -33,7 +33,7 @@ class expenseController {
             await knex('expense').where({ id: id }).del();
             return res.status(200).json({ ok: 'ok' });
         } catch (error) {
-            return res.status(400).json({ error: 'Ops aconteceu um erro! chama o Fabio' });
+            return res.status(400).json({ error: 'Ops aconteceu um erro!' });
         }
     }
 }
