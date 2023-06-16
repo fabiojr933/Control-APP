@@ -1,29 +1,23 @@
 
-  <h2 align="center">Loterias APP</h2>
-
-![55](https://user-images.githubusercontent.com/41793614/234372820-c62e26cd-9d12-45e6-a35a-ae7b19b558a5.png)
+  <h2 align="center">APP Controle de despesa</h2>
 
 
  <p align="center">
-    Aplicativo Gratuita desenvolvido para buscar o resultado dos jogos da  <a href="http://loterias.caixa.gov.br">Loterias CAIXA</a>.<br>
+    Aplicativo Gratuito desenvolvido para ter um controle de gasto pessoal >APP Controle de despesa</a>.<br>
     Espero melhorar o APLICATIVO com o tempo.  
   </p>
-  
-   <p align="center">
-    Web Service usando para consulta dos resultados  
-    https://loteriascaixa-api.herokuapp.com/swagger-ui/
-  </p>
+   
   
   #### Instale as dependências
 
 ```sh
-yarn install
+npm install
 ```
 
 #### Execute a aplicação localmente
 
 ```sh
-yarn start
+npm start
 ```
 
 ## Tecnologias utilizadas:
@@ -38,7 +32,7 @@ yarn start
 #### Imagens do projeto
 
 
-<img src=https://user-images.githubusercontent.com/41793614/234374779-8fce8898-69be-41eb-b657-bdd9873c1dcc.jpg width=30% height=20%>
+<img src=https://github.com/fabiojr933/Control-APP/assets/41793614/4223764a-0474-4d2c-bf75-1c914d359458 width=30% height=20%>
  <p  
  </p>
 <img src="https://user-images.githubusercontent.com/41793614/234374819-da82f90d-b184-4ce6-a2ff-02ebad646282.jpg" width=30% height=20%>
@@ -54,6 +48,7 @@ yarn start
 
 
 
+![1](https://github.com/fabiojr933/Control-APP/assets/41793614/4223764a-0474-4d2c-bf75-1c914d359458)
 
 
 
