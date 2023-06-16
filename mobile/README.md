@@ -26,6 +26,7 @@ npm start
 - styled-components
 - expo
 - axios
+- React Native Paper
 
 \_\_
 
